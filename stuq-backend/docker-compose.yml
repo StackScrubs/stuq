@@ -1,0 +1,31 @@
+version: '3.1'
+
+services:
+  db:
+    image: mysql:5.7-oracle
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      - mysql.env
+
+  backend:
+    image: stuq-backend:latest
+    restart: always
+    ports:
+      - 8085:8085
+    depends_on:
+      - db
+
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin:latest
+    restart: always
+    ports:
+      - 7000:80
+    environment:
+      PMA_HOST: db
