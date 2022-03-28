@@ -7,7 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 class StuqBackendApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void ciTest() {
+		assert(true);
 	}
 
 }

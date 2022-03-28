@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ master, dev ]
+  workflow_dispatch:
+
+jobs:
+  test-be:
+    runs-on: maven:3.6.3-openjdk-17-slim
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      run: cd stuq-backend && docker build -t stuq-backend .
+
+    - name: Run image, specifying to run tests
+      run: docker run stuq-backend mvn -Dserver.port=8085 spring-boot:test
