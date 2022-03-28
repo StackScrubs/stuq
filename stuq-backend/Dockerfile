@@ -1,4 +1,4 @@
-FROM maven:3.6.3-jdk-17-slim
+FROM maven:3.6.3-openjdk-17-slim
 
 WORKDIR /usr/src/app
 
