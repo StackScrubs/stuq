@@ -3,7 +3,7 @@ WORKDIR /app
 RUN npm install -g @vue/cli
 
 ENV NODE_ENV=development
-COPY package-lock.json package.json node_modules/ /app/
+COPY package-lock.json package.json node_modules* /app/
 RUN npm install
 
 COPY ./ /app
