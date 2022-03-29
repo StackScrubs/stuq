@@ -44,7 +44,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: ./frontend/
-        file: Dockerfile-dev
+        file: ./frontend/Dockerfile-dev
         tags: stuq-frontend
         push: false
         load: true
