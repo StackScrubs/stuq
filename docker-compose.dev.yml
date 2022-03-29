@@ -14,12 +14,22 @@ services:
       MYSQL_ROOT_PASSWORD: db_root_pass
 
   backend:
-    image: stuq-backend:latest
+    build: backend/
     restart: always
     ports:
       - 8085:8085
     depends_on:
       - db
+
+  frontend:
+    build:
+      context: frontend/
+      dockerfile: Dockerfile-dev
+    volumes:
+      - ./frontend:/app
+    restart: always
+    ports:
+      - 8080:8080
 
   phpmyadmin:
     depends_on:
