@@ -1,9 +1,17 @@
 package com.github.stackscrubs.stuq.backend.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class TeachingAssistant extends User {
+
+    @ManyToMany(mappedBy = "TeachingAssistants", fetch = FetchType.LAZY)
+    private Set<Subject> subjects = new HashSet<>();
 
     public TeachingAssistant(int id,
                             String firstName,
