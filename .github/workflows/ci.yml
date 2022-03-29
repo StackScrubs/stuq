@@ -7,14 +7,20 @@ on:
 
 jobs:
   test-backend:
-    runs-on: maven:3.6.3-openjdk-17-slim
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
 
     - name: Build Docker image
-      run: cd backend && docker build -t stuq-backend .
+      - uses: docker/build-push-action@v2
+        with:
+          tags: stuq-backend:latest
+          push: false
 
-    - name: Run image, specifying to run tests
-      run: docker run stuq-backend mvn -Dserver.port=8085 spring-boot:test
+    - name: Run Docker image, specifying to run tests
+      - uses: addnab/docker-run-action@v3
+        with:
+          image: stuq-backend:latest
+          run: mvn -Dserver.port=8085 spring-boot:test
