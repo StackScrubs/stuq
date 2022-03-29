@@ -2,10 +2,10 @@ FROM node:lts-alpine as build
 WORKDIR /app
 RUN npm install -g @vue/cli
 
-COPY ../../package-lock.json ../../package.json /app/
+COPY ./package-lock.json ./package.json /app/
 RUN npm install
 
-COPY ../../ /app
+COPY ./ /app
 
 ARG NODE_ENV=production
 RUN npm run build
