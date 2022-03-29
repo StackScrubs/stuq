@@ -28,7 +28,7 @@ jobs:
       uses: addnab/docker-run-action@v3
       with:
         image: stuq-backend
-        run: mvn -Dserver.port=8085 spring-boot:test
+        run: mvn test
 
   test-frontend:
     runs-on: ubuntu-latest
