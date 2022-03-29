@@ -1,32 +1,17 @@
 package com.github.stackscrubs.stuq.backend.model;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 
 @Entity
-public class TeachingAssistant {
-    @Id
-    private int id;
+public class TeachingAssistant extends User {
 
-    private String firstName;
-    
-    private String lastName;
-
-    public TeachingAssistant(int id, String firstName, String lastName) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public String getFirstName() {
-        return this.firstName;
-    }
-
-    public String getLastName() {
-        return this.lastName;
+    public TeachingAssistant(int id,
+                            String firstName,
+                            String lastName,
+                            String email,
+                            String phone,
+                            String password_hash)
+    {
+        super(id, firstName, lastName, email, phone, password_hash);
     }
 }
