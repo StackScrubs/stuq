@@ -10,7 +10,7 @@ import javax.persistence.ManyToMany;
 @Entity
 public class Teacher extends User {
 
-    @ManyToMany(mappedBy = "Teachers", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
     private Set<Subject> subjects = new HashSet<>();
 
 	public Teacher( int id,
