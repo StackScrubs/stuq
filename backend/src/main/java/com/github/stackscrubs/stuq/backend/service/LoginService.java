@@ -5,9 +5,8 @@ import com.github.stackscrubs.stuq.backend.model.LoginResponse;
 
 public class LoginService {
 
-    public LoginResponse login(LoginRequest login) {
-        // TODO!
-        return null;
+    public LoginResponse login(LoginRequest login) throws Exception {
+        throw new Exception("TODO");
     }
 
 }

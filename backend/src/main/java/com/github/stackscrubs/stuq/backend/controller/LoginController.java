@@ -22,9 +22,8 @@ import org.springframework.http.ResponseEntity;
 @RestController
 @RequestMapping(value = "/login")
 @EnableAutoConfiguration
-@CrossOrigin(origins = "WRITE HOST HERE") //TODO:
+@CrossOrigin(origins = "") //TODO:
 public class LoginController {
-
     @Autowired
     private LoginService service;
 

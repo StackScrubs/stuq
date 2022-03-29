@@ -4,17 +4,22 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.springframework.lang.NonNull;
+
 @Entity
 public class Assignment {
     @Id
+    @NonNull
     private int id;
 
+    @NonNull
     private String name;
 
     @ManyToOne
+    @NonNull
     private Subject subject;
 
-    public Assignment(int id, String name, Subject subject) {
+    public Assignment(@NonNull int id, @NonNull String name, @NonNull Subject subject) {
         this.id = id;
         this.name = name;
         this.subject = subject;

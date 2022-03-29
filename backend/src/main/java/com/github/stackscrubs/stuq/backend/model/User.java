@@ -5,28 +5,34 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+import org.springframework.lang.NonNull;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
     @Id
+    @NonNull
     private int id;
 
+    @NonNull
     private String firstName;
     
+    @NonNull
     private String lastName;
 
     private String email;
 
     private String phone;
 
+    @NonNull
     private String password_hash;
 
-    public User(int id,
-                String firstName,
-                String lastName,
+    protected User(@NonNull int id,
+                @NonNull String firstName,
+                @NonNull String lastName,
                 String email,
                 String phone,
-                String password_hash)
+                @NonNull String password_hash)
     {
         this.id = id;
         this.firstName = firstName;
