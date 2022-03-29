@@ -1,6 +1,7 @@
 package com.github.stackscrubs.stuq.backend.controller;
 
 import com.github.stackscrubs.stuq.backend.model.LoginResponse;
+
 import com.github.stackscrubs.stuq.backend.model.LoginRequest;
 import com.github.stackscrubs.stuq.backend.service.LoginService;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping(value = "/login")
@@ -30,10 +32,18 @@ public class LoginController {
 
     @GetMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public LoginResponse login(@RequestBody LoginRequest login) {
-        logger.info("Recieved login..." + login.getMail());
-        LoginResponse response = service.login(login);
-        logger.info("Sending result..." + response.getLoginStatus());
-        return response;
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest login) {
+        logger.info("Recieved login request..." + login.getEmail());
+        
+        try {
+            LoginResponse response = this.service.login(login);
+            logger.info("Sending result..." + response.getLoginStatus());
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.trace(e.getMessage());
+            
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

@@ -9,22 +9,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoginRequest {
 
-    private final String mail;
+    private final String email;
     private final String password;
 
     @JsonCreator
-    public LoginRequest(String mail, String password) {
-        this.mail = mail;
+    public LoginRequest(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 
-    @JsonProperty("mail")
-    public String getMail() {
-        return mail;
+    @JsonProperty("email")
+    public String getEmail() {
+        return this.email;
     }
 
     @JsonProperty("password")
-    public String getPw() {
-        return password;
+    public String getPassword() {
+        return this.password;
     }
 }
