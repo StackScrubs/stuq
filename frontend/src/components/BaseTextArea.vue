@@ -4,22 +4,18 @@
         :placeholder="label"
         @input="$emit('update:modelValue', $event.target.value)"
         class="text-field"
-        :id="uuid"
-        :aria-describedby="error ? `${uuid}-error` : null"
         :aria-invalid="error ? true : null"
     ></textarea>
     <p
         v-if="error"
         class="error-message"
-        :id="`${uuid}-error`"
         aria-live="assertive"
     >
         {{ error }}
     </p>
 </template>
 
-<script>
-import UniqueID from '../features/UniqueID'
+<script lang="ts">
 export default {
   props: {
     label: {
@@ -34,12 +30,12 @@ export default {
       type: String,
       default: ''
     }
-  },
-  setup () {
-    const uuid = UniqueID().getID()
-    return {
-      uuid
-    }
   }
 }
 </script>
+
+<style scoped>
+  p {
+    color: #b40000;
+  }
+</style>

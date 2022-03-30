@@ -6,7 +6,7 @@
     </ul>
 </template>
 
-<script>
+<script langs="ts">
 export default {
     props: {
         list: {
@@ -16,7 +16,3 @@ export default {
     }
 }
 </script>
-
-<style>
-
-</style>
