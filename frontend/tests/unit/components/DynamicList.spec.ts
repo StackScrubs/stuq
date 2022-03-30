@@ -29,7 +29,7 @@ describe("DynamicList.vue", () => {
         expect(wrapper.vm.list).to.deep.equal(list);
     });
 
-    it("reverses list when prop 'reverse' is set to 'true", () => {
+    it("reverses list when prop 'reverse' is set to 'true'", () => {
         const list = ["Some", "awesome", "list"];
         const wrapper = shallowMount(DynamicList, {
             props: {
