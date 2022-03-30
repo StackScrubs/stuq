@@ -1,5 +1,7 @@
 package com.github.stackscrubs.stuq.backend.model.jpa;
 
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -64,5 +66,54 @@ public class User {
     
     public String getPasswordHash() {
         return this.password_hash;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id,
+                            this.firstName,
+                            this.lastName,
+                            this.email,
+                            this.phone,
+                            this.password_hash);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        User other = (User) obj;
+        if (this.email == null) {
+            if (other.email != null)
+                return false;
+        } else if (!this.email.equals(other.email))
+            return false;
+        if (this.firstName == null) {
+            if (other.firstName != null)
+                return false;
+        } else if (!this.firstName.equals(other.firstName))
+            return false;
+        if (this.id != other.id)
+            return false;
+        if (this.lastName == null) {
+            if (other.lastName != null)
+                return false;
+        } else if (!this.lastName.equals(other.lastName))
+            return false;
+        if (this.password_hash == null) {
+            if (other.password_hash != null)
+                return false;
+        } else if (!this.password_hash.equals(other.password_hash))
+            return false;
+        if (this.phone == null) {
+            if (other.phone != null)
+                return false;
+        } else if (!this.phone.equals(other.phone))
+            return false;
+        return true;
     }
 }

@@ -1,5 +1,6 @@
 package com.github.stackscrubs.stuq.backend.model.jpa;
 
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -52,5 +53,39 @@ public class Assignment {
 
     public Set<SubmissionId> getSubmissions() {
         return this.submissions;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id, this.name, this.subject, this.submissions);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Assignment other = (Assignment) obj;
+        if (this.id != other.id)
+            return false;
+        if (this.name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!this.name.equals(other.name))
+            return false;
+        if (this.subject == null) {
+            if (other.subject != null)
+                return false;
+        } else if (!this.subject.equals(other.subject))
+            return false;
+        if (this.submissions == null) {
+            if (other.submissions != null)
+                return false;
+        } else if (!this.submissions.equals(other.submissions))
+            return false;
+        return true;
     }
 }
