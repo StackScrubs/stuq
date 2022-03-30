@@ -1,19 +1,28 @@
 <template>
-  <label v-if="label">{{ label }}</label>
+  <label :for="uuid" v-if="label">{{ label }}</label>
   <input
+    :id="uuid"
     v-bind="$attrs"
     :value="modelValue"
     :placeholder="label"
     @input="$emit('update:modelValue', $event.target.value)"
     class="field"
+    :aria-describedby="error ? `${uuid}-error` : null"
     :aria-invalid="error ? true : null"
   />
-  <p v-if="error" class="error-message" aria-live="assertive">
+  <p
+    v-if="error"
+    class="error-message"
+    :id="`${uuid}-error`"
+    aria-live="assertive"
+  >
     {{ error }}
   </p>
 </template>
 
 <script lang="ts">
+import { v4 as uuidv4 } from "uuid";
+
 export default {
   props: {
     label: {
@@ -27,6 +36,11 @@ export default {
     error: {
       type: String,
       default: "",
+    },
+  },
+  computed: {
+    uuid() {
+      return uuidv4();
     },
   },
 };
