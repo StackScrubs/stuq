@@ -1,6 +1,6 @@
 <template>
   <ul :class="$attrs.class">
-    <li v-for="(item, i) in list.slice().reverse()" :key="i">
+    <li v-for="(item, i) in listToRender" :key="i">
       {{ item }}
     </li>
   </ul>
@@ -12,6 +12,17 @@ export default {
     list: {
       type: Array,
       required: true,
+    },
+    reversed: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  computed: {
+    listToRender() {
+      let list = this.list.slice();
+
+      return this.reversed ? list.reverse() : list;
     },
   },
 };

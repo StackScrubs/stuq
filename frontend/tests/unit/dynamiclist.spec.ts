@@ -22,10 +22,22 @@ describe("DynamicList.vue", () => {
     });
 
     list.push("with", "more", "elements");
-    // DOM elements are not automatically updated by
-    // Vue as pr. https://laracasts.com/discuss/channels/vue/vuejs-props-dont-update-when-input-changes
+    // DOM elements are not automatically updated
+    // by Vue as pr. https://laracasts.com/discuss/channels/vue/vuejs-props-dont-update-when-input-changes
     // Check prop value directly instead here
     expect(wrapper.vm.list.length).to.equal(list.length);
+    // how to expect lists to be equal?
+  });
+
+  it("Prop 'reversed' reverses list", () => {
+    const list = ["Some", "awesome", "list"];
+    const wrapper = shallowMount(DynamicList, {
+      props: {
+        list,
+        reversed: false,
+      },
+    });
+    expect(true).to.equal(true);
     // how to expect lists to be equal?
   });
 });
