@@ -3,7 +3,7 @@ import { shallowMount } from "@vue/test-utils";
 import BaseInput from "@/components/BaseInput.vue";
 
 describe("BaseInput.vue", () => {
-  it("Label renders when set", () => {
+  it("renders label when set", () => {
     const label = "Some label";
     const wrapper = shallowMount(BaseInput, {
       props: {
@@ -16,7 +16,7 @@ describe("BaseInput.vue", () => {
     expect(wrapper.text()).to.equal(label);
   });
 
-  it("Input updates modelValue when set", () => {
+  it("updates modelValue on input", () => {
     const initialInput = "Some val";
     const wrapper = shallowMount(BaseInput);
     const input = wrapper.find("input");
@@ -32,7 +32,7 @@ describe("BaseInput.vue", () => {
       .then(() => expect(wrapper.vm.modelValue).to.equal(otherInput));
   });
 
-  it("Input emits update", () => {
+  it("emits update on input @input", () => {
     const wrapper = shallowMount(BaseInput);
     wrapper
       .find("input")
@@ -40,7 +40,7 @@ describe("BaseInput.vue", () => {
       .then(() => expect(wrapper.emitted().update).to.equal(true));
   });
 
-  it("Error renders when set", () => {
+  it("renders error when set", () => {
     const error = "Some error";
     const wrapper = shallowMount(BaseInput, {
       props: {

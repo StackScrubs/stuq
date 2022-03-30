@@ -3,7 +3,7 @@ import { shallowMount } from "@vue/test-utils";
 import BaseSelect from "@/components/BaseSelect.vue";
 
 describe("BaseSelect.vue", () => {
-  it("Label renders when set", () => {
+  it("renders label when set", () => {
     const label = "Some label";
     const wrapper = shallowMount(BaseSelect, {
       props: {
@@ -16,7 +16,7 @@ describe("BaseSelect.vue", () => {
     expect(wrapper.text()).to.equal(label);
   });
 
-  it("Option elements render", () => {
+  it("renders option elements", () => {
     const options = ["Opt1", "Opt2", "Opt3"];
     const wrapper = shallowMount(BaseSelect, {
       props: {
@@ -30,7 +30,7 @@ describe("BaseSelect.vue", () => {
     expect(wrapperOptions.map((opt) => opt.text())).to.deep.equal(options);
   });
 
-  it("Select emits update", () => {
+  it("emits update on select @change", () => {
     const wrapper = shallowMount(BaseSelect);
     wrapper
       .find("select")

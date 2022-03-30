@@ -3,7 +3,7 @@ import { shallowMount } from "@vue/test-utils";
 import DynamicList from "@/components/DynamicList.vue";
 
 describe("DynamicList.vue", () => {
-  it("List elements render", () => {
+  it("renders list elements", () => {
     const list = ["Some", "awesome", "list"];
     const wrapper = shallowMount(DynamicList, {
       props: { list },
@@ -15,7 +15,7 @@ describe("DynamicList.vue", () => {
     expect(listElements.map((li) => li.text())).to.deep.equal(list);
   });
 
-  it("List updates on push", () => {
+  it("updates list when items are pushed into said list", () => {
     const list = ["Some", "awesome", "list"];
     const wrapper = shallowMount(DynamicList, {
       props: { list },
@@ -29,7 +29,7 @@ describe("DynamicList.vue", () => {
     expect(wrapper.vm.list).to.deep.equal(list);
   });
 
-  it("Prop 'reversed' reverses list", () => {
+  it("reverses list when prop 'reverse' is set to 'true", () => {
     const list = ["Some", "awesome", "list"];
     const wrapper = shallowMount(DynamicList, {
       props: {

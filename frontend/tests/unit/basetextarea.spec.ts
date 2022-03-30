@@ -3,7 +3,7 @@ import { shallowMount } from "@vue/test-utils";
 import BaseTextArea from "@/components/BaseTextArea.vue";
 
 describe("BaseTextArea.vue", () => {
-  it("Label renders when set", () => {
+  it("renders label on set", () => {
     const label = "Some label";
     const wrapper = shallowMount(BaseTextArea, {
       props: {
@@ -16,7 +16,7 @@ describe("BaseTextArea.vue", () => {
     expect(placeholder).to.equal(label);
   });
 
-  it("Input updates modelValue when set", () => {
+  it("updates modelValue on input", () => {
     const initialInput = "Some val";
     const wrapper = shallowMount(BaseTextArea);
     const textarea = wrapper.find("textarea");
@@ -32,7 +32,7 @@ describe("BaseTextArea.vue", () => {
       .then(() => expect(wrapper.vm.modelValue).to.equal(otherInput));
   });
 
-  it("Input emits update", () => {
+  it("emits update on textarea @input", () => {
     const wrapper = shallowMount(BaseTextArea);
     wrapper
       .find("textarea")
@@ -40,7 +40,7 @@ describe("BaseTextArea.vue", () => {
       .then(() => expect(wrapper.emitted().update).to.equal(true));
   });
 
-  it("Error renders when set", () => {
+  it("renders error when set", () => {
     const error = "Some error";
     const wrapper = shallowMount(BaseTextArea, {
       props: {

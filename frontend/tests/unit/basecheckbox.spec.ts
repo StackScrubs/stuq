@@ -3,7 +3,7 @@ import { shallowMount } from "@vue/test-utils";
 import BaseCheckbox from "@/components/BaseCheckbox.vue";
 
 describe("BaseCheckbox.vue", () => {
-  it("Label renders when set", () => {
+  it("renders label when set", () => {
     const label = "Some label";
     const wrapper = shallowMount(BaseCheckbox, {
       props: {
@@ -16,7 +16,7 @@ describe("BaseCheckbox.vue", () => {
     expect(wrapper.text()).to.equal(label);
   });
 
-  it("Checkbox emits update", () => {
+  it("emits update on checkbox @change", () => {
     const wrapper = shallowMount(BaseCheckbox);
     wrapper
       .find("input")
@@ -24,7 +24,7 @@ describe("BaseCheckbox.vue", () => {
       .then(() => expect(wrapper.emitted().update).to.equal(true));
   });
 
-  it("Error renders when set", () => {
+  it("renders error when set", () => {
     const error = "Some error";
     const wrapper = shallowMount(BaseCheckbox, {
       props: {
