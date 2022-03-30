@@ -1,5 +1,7 @@
 package com.github.stackscrubs.stuq.backend.model.jpa;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
@@ -36,11 +38,7 @@ public class SubmissionId {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((assignment == null) ? 0 : assignment.hashCode());
-        result = prime * result + ((student == null) ? 0 : student.hashCode());
-        return result;
+        return Objects.hash(this.student, this.assignment);
     }
 
     @Override
@@ -52,15 +50,15 @@ public class SubmissionId {
         if (getClass() != obj.getClass())
             return false;
         SubmissionId other = (SubmissionId) obj;
-        if (assignment == null) {
+        if (this.assignment == null) {
             if (other.assignment != null)
                 return false;
-        } else if (!assignment.equals(other.assignment))
+        } else if (!this.assignment.equals(other.assignment))
             return false;
-        if (student == null) {
+        if (this.student == null) {
             if (other.student != null)
                 return false;
-        } else if (!student.equals(other.student))
+        } else if (!this.student.equals(other.student))
             return false;
         return true;
     }

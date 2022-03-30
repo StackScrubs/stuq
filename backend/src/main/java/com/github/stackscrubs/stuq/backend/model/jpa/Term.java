@@ -17,6 +17,6 @@ public class Term {
     }
 
     public TermId getId() {
-        return id;
+        return this.id;
     }
 }

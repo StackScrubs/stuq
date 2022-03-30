@@ -1,5 +1,7 @@
 package com.github.stackscrubs.stuq.backend.model;
 
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,7 +17,7 @@ public class LoginResponse {
     }
 
     @JsonProperty("loginStatus")
-    public String getLoginStatus() {
-        return loginStatus;
+    public Optional<String> getLoginStatus() {
+        return Optional.ofNullable(loginStatus);
     }
 }

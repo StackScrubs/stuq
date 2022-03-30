@@ -1,5 +1,7 @@
 package com.github.stackscrubs.stuq.backend.model;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -19,8 +21,8 @@ public class LoginRequest {
 
     @JsonCreator
     public LoginRequest(@NonNull String email, @NonNull String password) {
-        this.email = email;
-        this.password = password;
+        this.email = Objects.requireNonNull(email, "email cannot be null");
+        this.password = Objects.requireNonNull(password, "password cannot be null");
     }
 
     @JsonProperty("email")

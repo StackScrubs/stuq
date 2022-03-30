@@ -1,6 +1,7 @@
 package com.github.stackscrubs.stuq.backend.model.jpa;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -21,20 +22,16 @@ public class SubjectId implements Serializable {
     }
 
     public String getCode() {
-        return code;
+        return this.code;
     }
 
     public Term getTerm() {
-        return term;
+        return this.term;
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((code == null) ? 0 : code.hashCode());
-        result = prime * result + ((term == null) ? 0 : term.hashCode());
-        return result;
+        return Objects.hash(this.code, this.term);
     }
 
     @Override
@@ -46,15 +43,15 @@ public class SubjectId implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         SubjectId other = (SubjectId) obj;
-        if (code == null) {
+        if (this.code == null) {
             if (other.code != null)
                 return false;
-        } else if (!code.equals(other.code))
+        } else if (!this.code.equals(other.code))
             return false;
-        if (term == null) {
+        if (this.term == null) {
             if (other.term != null)
                 return false;
-        } else if (!term.equals(other.term))
+        } else if (!this.term.equals(other.term))
             return false;
         return true;
     }

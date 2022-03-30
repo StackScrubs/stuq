@@ -1,5 +1,7 @@
 package com.github.stackscrubs.stuq.backend.model.jpa;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -19,20 +21,16 @@ public class TermId {
     }
 
     public int getYear() {
-        return year;
+        return this.year;
     }
 
     public String getPeriod() {
-        return period;
+        return this.period;
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((period == null) ? 0 : period.hashCode());
-        result = prime * result + year;
-        return result;
+        return Objects.hash(this.year, this.period);
     }
 
     @Override
