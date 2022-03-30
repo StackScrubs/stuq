@@ -1,6 +1,5 @@
 package com.github.stackscrubs.stuq.backend.model.jpa;
 
-import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Entity;
