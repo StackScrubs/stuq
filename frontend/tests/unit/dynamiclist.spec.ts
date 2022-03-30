@@ -12,9 +12,7 @@ describe("DynamicList.vue", () => {
     const listElements = wrapper.find("ul").findAll("li");
 
     expect(listElements.length).to.equal(list.length);
-    listElements
-      .map((li) => li.text())
-      .every((val, i) => expect(val).to.equal(list[i]));
+    expect(listElements.map((li) => li.text())).to.deep.equal(list);
   });
 
   it("List updates on push", () => {
@@ -28,9 +26,7 @@ describe("DynamicList.vue", () => {
     // by Vue as pr. https://laracasts.com/discuss/channels/vue/vuejs-props-dont-update-when-input-changes
     // Check prop value directly instead here
     expect(wrapper.vm.list.length).to.equal(list.length);
-    wrapper.vm.list.every((val: string, i: number) =>
-      expect(val).to.equal(list[i])
-    );
+    expect(wrapper.vm.list).to.deep.equal(list);
   });
 
   it("Prop 'reversed' reverses list", () => {
@@ -46,8 +42,6 @@ describe("DynamicList.vue", () => {
     const listElements = wrapper.find("ul").findAll("li");
 
     expect(listElements.length).to.equal(list.length);
-    listElements
-      .map((li) => li.text())
-      .every((val, i) => expect(val).to.equal(reversedList[i]));
+    expect(listElements.map((li) => li.text())).to.deep.equal(reversedList);
   });
 });
