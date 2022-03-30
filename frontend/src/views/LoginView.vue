@@ -1,17 +1,18 @@
 <template>
-  <div class="">
-    <LoginComponent />
+  <div class="box">
+    <img src="../assets/logo.png" alt="logo" />
+    <LoginForm />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import LoginComponent from "@/components/LoginComponent.vue";
+import LoginForm from "@/components/LoginForm.vue";
 
 export default defineComponent({
   name: "LoginView",
   components: {
-    LoginComponent,
+    LoginForm,
   },
 });
 </script>

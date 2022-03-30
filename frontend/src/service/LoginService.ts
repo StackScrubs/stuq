@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Login } from "../types/Login";
+import { User } from "../types/User";
 const API = axios.create({
   baseURL: "API URL" + "/login", //Set from .env
   withCredentials: false,
@@ -10,8 +10,8 @@ const API = axios.create({
 });
 
 export default {
-  doLogin(login: Login) {
-    return API.post("", login).then(
+  doLogin(user: User) {
+    return API.post("", user).then(
       function (value) {
         /* code if successful */
         //set recieved token in state
