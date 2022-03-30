@@ -14,7 +14,7 @@
   </p>
 </template>
 
-<script>
+<script langs="ts">
 export default {
   props: {
     label: {
