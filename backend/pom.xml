@@ -8,10 +8,10 @@
 		<version>2.6.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.github.stackscrubs</groupId>
+	<groupId>com.github.stackscrubs.stuq</groupId>
 	<artifactId>stuq-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>stuq-backend</name>
+	<name>backend</name>
 	<description>Backend for STUQ.</description>
 	<properties>
 		<java.version>17</java.version>
