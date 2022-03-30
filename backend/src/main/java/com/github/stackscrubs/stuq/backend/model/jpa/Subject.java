@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import org.springframework.lang.NonNull;
 
@@ -25,16 +26,17 @@ public class Subject {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "subject_teacher",
         joinColumns = { @JoinColumn(name = "teacher", nullable = false, updatable = false) },
-        inverseJoinColumns = { @JoinColumn(name = "subject", nullable = false, updatable = false) }
-    )
+        inverseJoinColumns = { @JoinColumn(name = "subject", nullable = false, updatable = false) })
     private Set<Teacher> teachers = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "subject_teaching_assistant",
         joinColumns = {@JoinColumn(name = "teaching_assistant", nullable = false, updatable = false)}, 
-        inverseJoinColumns = {@JoinColumn(name = "subject", nullable = false, updatable = false)}
-    )
+        inverseJoinColumns = {@JoinColumn(name = "subject", nullable = false, updatable = false)})
     private Set<TeachingAssistant> teachingAssistants = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private Set<Assignment> assignments;
 
     public Subject(@NonNull SubjectId id) {
         this.id = id;
@@ -50,5 +52,9 @@ public class Subject {
 
     public Set<TeachingAssistant> getTeachingAssistants() {
         return this.teachingAssistants;
+    }
+
+    public Set<Assignment> getAssignments() {
+        return this.assignments;
     }
 }

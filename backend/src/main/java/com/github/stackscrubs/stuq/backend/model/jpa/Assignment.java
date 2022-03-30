@@ -5,9 +5,12 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.springframework.lang.NonNull;
 
@@ -15,6 +18,7 @@ import org.springframework.lang.NonNull;
 public class Assignment {
     @Id
     @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
     @Column(nullable = false)
@@ -25,8 +29,8 @@ public class Assignment {
     @Column(nullable = false)
     private Subject subject;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Set<Submission> submissions;
+    @OneToMany(fetch = FetchType.LAZY)
+    private Set<SubmissionId> submissions;
 
     public Assignment(@NonNull int id, @NonNull String name, @NonNull Subject subject) {
         this.id = id;
@@ -44,5 +48,9 @@ public class Assignment {
 
     public Subject getSubject() {
         return this.subject;
+    }
+
+    public Set<SubmissionId> getSubmissions() {
+        return this.submissions;
     }
 }

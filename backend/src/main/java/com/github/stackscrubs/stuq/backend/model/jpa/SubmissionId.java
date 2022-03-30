@@ -17,7 +17,7 @@ public class SubmissionId {
     @Column(nullable = false)
     private Student student;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     @Column(nullable = false)
     private Assignment assignment;
