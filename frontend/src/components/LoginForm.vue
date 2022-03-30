@@ -24,24 +24,24 @@ import { User } from "../types/User";
 import store from "../store";
 
 export default defineComponent({
-  name: "LoginComponent",
-  data: (): User => {
-    return {
-      email: "",
-      password: "",
-    };
-  },
-  methods: {
-    submit() {
-      const email = this.email;
-      const password = this.password;
-      if (this.email && this.password) {
-        store.dispatch("login", { email, password });
-        //If OK => Route to home page
-        //If not OK => handle error
-      }
+    name: "LoginComponent",
+    data: (): User => {
+        return {
+            email: "",
+            password: "",
+        };
     },
-  },
+    methods: {
+        submit() {
+            const email = this.email;
+            const password = this.password;
+            if (this.email && this.password) {
+                store.dispatch("login", { email, password });
+                //If OK => Route to home page
+                //If not OK => handle error
+            }
+        },
+    },
 });
 </script>
 
