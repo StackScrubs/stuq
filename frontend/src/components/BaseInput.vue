@@ -32,7 +32,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 label {
   display: inline-block;
   width: 60px;
