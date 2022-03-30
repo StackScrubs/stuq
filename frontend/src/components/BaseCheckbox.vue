@@ -3,19 +3,19 @@
     v-bind="$attrs"
     :checked="modelValue"
     type="checkbox"
-    :id="uuid"
+    :id="uid"
     @change="$emit('update:modelValue', $event.target.checked)"
     class="field"
-    :aria-describedby="error ? `${uuid}-error` : null"
+    :aria-describedby="error ? `${uid}-error` : null"
     :aria-invalid="error ? true : null"
   />
-  <label :for="uuid" v-if="label">
+  <label :for="uid" v-if="label">
     {{ label }}
   </label>
   <p
     v-if="error"
     class="error-message"
-    :id="`${uuid}-error`"
+    :id="`${uid}-error`"
     aria-live="assertive"
   >
     {{ error }}
@@ -23,26 +23,26 @@
 </template>
 
 <script langs="ts">
-import { v4 as uuidv4 } from "uuid";
+import { uid } from "@/uid";
 
 export default {
-  props: {
-    label: {
-      type: String,
-      default: "",
+    props: {
+        label: {
+            type: String,
+            default: "",
+        },
+        modelValue: {
+            type: Boolean,
+        },
+        error: {
+            type: String,
+            default: "",
+        },
     },
-    modelValue: {
-      type: Boolean,
+    computed: {
+        uid() {
+            return uid();
+        },
     },
-    error: {
-      type: String,
-      default: "",
-    },
-  },
-  computed: {
-    uuid() {
-      return uuidv4();
-    },
-  },
 };
 </script>

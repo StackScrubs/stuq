@@ -8,22 +8,22 @@
 
 <script langs="ts">
 export default {
-  props: {
-    list: {
-      type: Array,
-      required: true,
+    props: {
+        list: {
+            type: Array,
+            required: true,
+        },
+        reversed: {
+            type: Boolean,
+            default: false,
+        },
     },
-    reversed: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  computed: {
-    listToRender() {
-      let list = this.list.slice();
+    computed: {
+        listToRender() {
+            let list = this.list.slice();
 
-      return this.reversed ? list.reverse() : list;
+            return this.reversed ? list.reverse() : list;
+        },
     },
-  },
 };
 </script>

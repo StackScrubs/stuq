@@ -1,8 +1,8 @@
 <template>
-  <label :for="uuid" v-if="label">{{ label }}</label>
+  <label :for="uid" v-if="label">{{ label }}</label>
   <select
     v-bind="$attrs"
-    :id="uuid"
+    :id="uid"
     :value="modelValue"
     @change="$emit('update:modelValue', $event.target.value)"
     class="field"
@@ -19,27 +19,27 @@
 </template>
 
 <script lang="ts">
-import { v4 as uuidv4 } from "uuid";
+import { uid } from "@/uid";
 
 export default {
-  props: {
-    label: {
-      type: String,
-      default: "",
+    props: {
+        label: {
+            type: String,
+            default: "",
+        },
+        modelValue: {
+            type: [String, Number],
+            default: "",
+        },
+        options: {
+            type: Array,
+            required: true,
+        },
     },
-    modelValue: {
-      type: [String, Number],
-      default: "",
+    computed: {
+        uid() {
+            return uid();
+        },
     },
-    options: {
-      type: Array,
-      required: true,
-    },
-  },
-  computed: {
-    uuid() {
-      return uuidv4();
-    },
-  },
 };
 </script>

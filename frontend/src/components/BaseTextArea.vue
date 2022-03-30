@@ -1,17 +1,17 @@
 <template>
   <textarea
-    :id="uuid"
+    :id="uid"
     v-bind="$attrs"
     :placeholder="label"
     @input="$emit('update:modelValue', $event.target.value)"
     class="text-field"
-    :aria-describedby="error ? `${uuid}-error` : null"
+    :aria-describedby="error ? `${uid}-error` : null"
     :aria-invalid="error ? true : null"
   ></textarea>
   <p
     v-if="error"
     class="error-message"
-    :id="`${uuid}-error`"
+    :id="`${uid}-error`"
     aria-live="assertive"
   >
     {{ error }}
@@ -19,28 +19,28 @@
 </template>
 
 <script lang="ts">
-import { v4 as uuidv4 } from "uuid";
+import { uid } from "@/uid";
 
 export default {
-  props: {
-    label: {
-      type: String,
-      default: "",
+    props: {
+        label: {
+            type: String,
+            default: "",
+        },
+        modelValue: {
+            type: String,
+            default: "",
+        },
+        error: {
+            type: String,
+            default: "",
+        },
     },
-    modelValue: {
-      type: String,
-      default: "",
+    computed: {
+        uid() {
+            return uid();
+        },
     },
-    error: {
-      type: String,
-      default: "",
-    },
-  },
-  computed: {
-    uuid() {
-      return uuidv4();
-    },
-  },
 };
 </script>
 
