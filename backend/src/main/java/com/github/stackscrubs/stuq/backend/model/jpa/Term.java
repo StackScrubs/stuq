@@ -1,5 +1,7 @@
-package com.github.stackscrubs.stuq.backend.model;
+package com.github.stackscrubs.stuq.backend.model.jpa;
 
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -7,16 +9,15 @@ import org.springframework.lang.NonNull;
 
 @Entity
 public class Term {
-    @Id
-    @NonNull
-    private int year;
-    
-    @Id
-    @NonNull
-    private String period;
+    @EmbeddedId
+    @Column(nullable = false)
+    private TermId id;
 
-    public Term(@NonNull int year, @NonNull String period) {
-        this.year = year;
-        this.period = period;
+    public Term(@NonNull TermId id) {
+        this.id = id;
+    }
+
+    public TermId getId() {
+        return id;
     }
 }

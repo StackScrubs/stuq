@@ -1,4 +1,4 @@
-package com.github.stackscrubs.stuq.backend.model;
+package com.github.stackscrubs.stuq.backend.model.jpa;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,38 +1,31 @@
-package com.github.stackscrubs.stuq.backend.model;
+package com.github.stackscrubs.stuq.backend.model.jpa;
 
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 
 import org.springframework.lang.NonNull;
 
 @Entity
 public class Submission {
-    @Id
-    @NonNull
-    private Student student;
+    
+    @EmbeddedId
+    @Column(nullable = false)
+    private SubmissionId id;
 
-    @Id
-    @NonNull
-    private Assignment assignment;
-
-    @NonNull
+    @Column(nullable = false)
     private boolean isApproved;
 
     private String feedback;
 
-    public Submission(@NonNull Student student, @NonNull Assignment assignment, @NonNull boolean isApproved, String feedback) {
-        this.student = student;
-        this.assignment = assignment;
+    public Submission(@NonNull SubmissionId id, @NonNull boolean isApproved, String feedback) {
+        this.id = id;
         this.isApproved = isApproved;
         this.feedback = feedback;
     }
 
-    public Student getStudent() {
-        return this.student;
-    }
-
-    public Assignment getAssignemnt() {
-        return this.assignment;
+    public SubmissionId getId() {
+        return this.getId();
     }
 
     public boolean isApproved() {

@@ -1,12 +1,15 @@
-package com.github.stackscrubs.stuq.backend.model;
+package com.github.stackscrubs.stuq.backend.model.jpa;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -16,12 +19,9 @@ import org.springframework.lang.NonNull;
 @Entity
 public class Subject {
     @Id
-    @NonNull
-    private String code;
-
-    @Id
-    @NonNull
-    private Term term;
+    @EmbeddedId
+    @Column(nullable = false)
+    private SubjectId id;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "subject_teacher",
@@ -37,17 +37,12 @@ public class Subject {
     )
     private Set<TeachingAssistant> teachingAssistants = new HashSet<>();
 
-    public Subject(@NonNull String code, @NonNull Term term) {
-        this.code = code;
-        this.term = term;
+    public Subject(@NonNull SubjectId id) {
+        this.id = id;
     }
 
-    public String getCode() {
-        return this.code;
-    }
-
-    public Term getTerm() {
-        return this.term;
+    public SubjectId getId() {
+        return this.id;
     }
 
     public Set<Teacher> getTeachers() {
