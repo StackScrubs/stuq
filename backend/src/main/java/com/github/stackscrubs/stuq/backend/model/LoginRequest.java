@@ -11,7 +11,7 @@ import org.springframework.lang.NonNull;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoginRequest {
 
-    @NonNull 
+    @NonNull
     private final String email;
 
     @NonNull 

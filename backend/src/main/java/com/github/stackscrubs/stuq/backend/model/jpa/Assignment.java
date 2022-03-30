@@ -1,4 +1,4 @@
-package com.github.stackscrubs.stuq.backend.model;
+package com.github.stackscrubs.stuq.backend.model.jpa;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,7 +9,7 @@ import org.springframework.lang.NonNull;
 @Entity
 public class Assignment {
     @Id
-    @NonNull
+    @Column()
     private int id;
 
     @NonNull
