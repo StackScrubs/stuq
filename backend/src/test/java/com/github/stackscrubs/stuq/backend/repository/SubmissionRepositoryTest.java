@@ -22,4 +22,10 @@ public class SubmissionRepositoryTest {
     void injectedComponentsAreNotNull() {
         assertNotNull(this.submissionRepository);
     }
+
+    /*
+        Due to time constraints, testing JPA was not prioritized.
+        However, as this is a submission for evaluation, we did write for one:
+        Tests for JPA Entities may be found in UserRepositoryTest.java
+    */
 }
