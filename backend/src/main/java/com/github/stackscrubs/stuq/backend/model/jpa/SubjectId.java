@@ -18,10 +18,9 @@ public class SubjectId implements Serializable {
     private String code;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(referencedColumnName = "id", nullable = false)
     @JoinColumns({
-        @JoinColumn(referencedColumnName = "year", nullable = false),
-        @JoinColumn(referencedColumnName = "period", nullable = false)
+        @JoinColumn(name = "term_year", referencedColumnName = "year", nullable = false),
+        @JoinColumn(name = "term_period", referencedColumnName = "period", nullable = false)
     })
     private Term term;
 

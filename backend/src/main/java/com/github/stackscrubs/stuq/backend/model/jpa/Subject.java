@@ -25,21 +25,19 @@ public class Subject {
     private SubjectId id;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "subject_teacher",
-        joinColumns = {
-            @JoinColumn(name = "teacher", nullable = false, updatable = false),
-            @JoinColumn(name = "subject", nullable = false, updatable = false)
-        }
-    )
+    @JoinTable(name = "subject_teacher", joinColumns = {
+        @JoinColumn(name = "teacher", nullable = false, updatable = false),
+        @JoinColumn(name = "subject_code", nullable = false, updatable = false),
+        @JoinColumn(name = "subject_term", nullable = false, updatable = false)
+    })
     private Set<Teacher> teachers = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "subject_teaching_assistant",
-        joinColumns = {
-            @JoinColumn(name = "teaching_assistant", nullable = false, updatable = false),
-            @JoinColumn(name = "subject", nullable = false, updatable = false)
-        }
-    )
+    @JoinTable(name = "subject_teaching_assistant", joinColumns = {
+        @JoinColumn(name = "teaching_assistant", nullable = false, updatable = false),
+        @JoinColumn(name = "subject_code", nullable = false, updatable = false),
+        @JoinColumn(name = "subject_term", nullable = false, updatable = false)
+    })
     private Set<TeachingAssistant> teachingAssistants = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY)

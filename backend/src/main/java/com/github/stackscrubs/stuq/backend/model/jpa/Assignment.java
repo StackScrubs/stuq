@@ -29,7 +29,8 @@ public class Assignment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
         @JoinColumn(referencedColumnName = "code", nullable = false),
-        @JoinColumn(referencedColumnName = "term", nullable = false),
+        @JoinColumn(referencedColumnName = "term_year", nullable = false),
+        @JoinColumn(referencedColumnName = "term_period", nullable = false)
     })
     private Subject subject;
 
