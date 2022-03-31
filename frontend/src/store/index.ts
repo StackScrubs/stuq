@@ -9,15 +9,5 @@ const store = createStore<RootState>({
     modules: {
         authentication: authentication,
     },
-    // getters: {
-    //     statusGetter: (state, getters, rootState, rootGetters) => {
-    //         rootGetters.someOtherGetter;
-    //         rootGetters["authentication/status"];
-    //     },
-    //     tokenGetter: (state, getters, rootState, rootGetters) => {
-    //         rootGetters.someOtherGetter;
-    //         rootGetters["authentication/token"];
-    //     },
-    // }
 });
 export default store;
