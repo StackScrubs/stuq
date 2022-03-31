@@ -10,7 +10,7 @@ import org.springframework.lang.NonNull;
 
 @Embeddable
 public class TermId implements Serializable {
-    @Column(nullable = false)
+    @Column(name = "`year`", nullable = false)
     private int year;
     
     @Column(nullable = false)

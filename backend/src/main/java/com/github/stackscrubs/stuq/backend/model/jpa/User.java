@@ -9,11 +9,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 
 import org.springframework.lang.NonNull;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "`user`")
 public class User {
     @Id
     @Column(nullable = false)
@@ -35,19 +37,19 @@ public class User {
     private String phone;
 
     @Column(nullable = false)
-    private String password_hash;
+    private String passwordHash;
 
     protected User( @NonNull String firstName,
                     @NonNull String lastName,
                     String email,
                     String phone,
-                    @NonNull String password_hash)
+                    @NonNull String passwordHash)
     {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
-        this.password_hash = password_hash;
+        this.passwordHash = passwordHash;
     }
 
     public int getId() {
@@ -71,7 +73,7 @@ public class User {
     } 
     
     public String getPasswordHash() {
-        return this.password_hash;
+        return this.passwordHash;
     }
 
     @Override
@@ -81,7 +83,7 @@ public class User {
                             this.lastName,
                             this.email,
                             this.phone,
-                            this.password_hash);
+                            this.passwordHash);
     }
 
     @Override
@@ -110,10 +112,10 @@ public class User {
                 return false;
         } else if (!this.lastName.equals(other.lastName))
             return false;
-        if (this.password_hash == null) {
-            if (other.password_hash != null)
+        if (this.passwordHash == null) {
+            if (other.passwordHash != null)
                 return false;
-        } else if (!this.password_hash.equals(other.password_hash))
+        } else if (!this.passwordHash.equals(other.passwordHash))
             return false;
         if (this.phone == null) {
             if (other.phone != null)

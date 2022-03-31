@@ -14,12 +14,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ContextConfiguration(classes = StuqBackendApplication.class)
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-public class AssignmentRepositoryTest {
+public class UserRepositoryTest {
     @Autowired
-    private AssignmentRepository assignmentRepository;
+    private UserRepository userRepository;
 
     @Test
     void injectedComponentsAreNotNull() {
-        assertNotNull(this.assignmentRepository);
+        assertNotNull(this.userRepository);
     }
 }
