@@ -60,7 +60,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.box {
+.box { 
   max-width: 200px;
   padding: 20px;
   display: flex;
@@ -80,23 +80,16 @@ export default defineComponent({
   font-size: 16px;
 }
 
-label {
-  color: red;
-}
-</style>
-
-<style lang="scss">
-.base-input-label {
-  align-self: flex-start;
-  text-align: left;
-}
-
-.base-input-field {
+:deep(.base-input-field) {
   margin: 10px;
   padding: 10px 5px;
 }
 
-.login-form-item {
+:deep(.login-form-item) {
   margin: 0px 0px 20px 0px;
+}
+:deep(label) {
+  align-self: flex-start;
+  text-align: left;
 }
 </style>
