@@ -8,10 +8,18 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
 import org.springframework.lang.NonNull;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
+    private static final Pbkdf2PasswordEncoder PASSWORD_ENCODER = new Pbkdf2PasswordEncoder(
+        System.getenv("PASSWORD_SECRET"),
+        16,
+        200_000, 
+        512
+    );
+
     @Id
     @NonNull
     private int id;
@@ -27,21 +35,20 @@ public class User {
     private String phone;
 
     @NonNull
-    private String password_hash;
+    private String passwordHash;
 
     protected User(@NonNull int id,
                 @NonNull String firstName,
                 @NonNull String lastName,
                 String email,
                 String phone,
-                @NonNull String password_hash)
+                @NonNull String passwordHash)
     {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
-        this.password_hash = password_hash;
     }
 
     public int getId() {
@@ -65,7 +72,11 @@ public class User {
     } 
     
     public String getPasswordHash() {
-        return this.password_hash;
+        return this.passwordHash;
+    }
+
+    public boolean passwordMatches(String password) {
+        return PASSWORD_ENCODER.matches(password, this.passwordHash);
     }
 
     @Override
@@ -75,7 +86,7 @@ public class User {
                             this.lastName,
                             this.email,
                             this.phone,
-                            this.password_hash);
+                            this.passwordHash);
     }
 
     @Override
@@ -104,10 +115,10 @@ public class User {
                 return false;
         } else if (!this.lastName.equals(other.lastName))
             return false;
-        if (this.password_hash == null) {
-            if (other.password_hash != null)
+        if (this.passwordHash == null) {
+            if (other.passwordHash != null)
                 return false;
-        } else if (!this.password_hash.equals(other.password_hash))
+        } else if (!this.passwordHash.equals(other.passwordHash))
             return false;
         if (this.phone == null) {
             if (other.phone != null)
