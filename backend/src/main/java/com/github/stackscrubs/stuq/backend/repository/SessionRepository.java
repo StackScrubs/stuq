@@ -7,13 +7,11 @@ import com.github.stackscrubs.stuq.backend.model.jpa.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface SessionRepository extends JpaRepository<User, byte[]> {
     
-    Optional<User> findById(int id);
-
-    Optional<User> findByEmail(String email);
+    Optional<User> findById(byte[] token);
 
     List<User> findAll();
 
-    void deleteById(int id);
+    void deleteById(byte[] token);
 }
