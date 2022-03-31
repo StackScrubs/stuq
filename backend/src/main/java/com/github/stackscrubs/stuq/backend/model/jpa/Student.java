@@ -14,7 +14,9 @@ public class Student extends User {
   @OneToMany(mappedBy = "id.student", fetch = FetchType.LAZY)
   private Set<Submission> submissions;
 
-	public Student( @NonNull String firstName,
+	Student() {}
+
+  public Student( @NonNull String firstName,
                   @NonNull String lastName,
                   String email,
                   String phone,

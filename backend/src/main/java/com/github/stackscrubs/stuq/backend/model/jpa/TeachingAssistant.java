@@ -15,6 +15,8 @@ public class TeachingAssistant extends User {
     @ManyToMany(mappedBy = "teachingAssistants", fetch = FetchType.LAZY)
     private Set<Subject> subjects = new HashSet<>();
 
+    TeachingAssistant() {}
+
     public TeachingAssistant(@NonNull String firstName,
                             @NonNull String lastName,
                             String email,

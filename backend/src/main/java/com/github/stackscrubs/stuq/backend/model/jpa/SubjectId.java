@@ -24,6 +24,8 @@ public class SubjectId implements Serializable {
     })
     private Term term;
 
+    SubjectId() {}
+
     public SubjectId(@NonNull String code, @NonNull Term term) {
         this.code = code;
         this.term = term;

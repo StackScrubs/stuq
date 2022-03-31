@@ -37,6 +37,8 @@ public class Assignment {
     @OneToMany(mappedBy = "id.assignment", fetch = FetchType.LAZY)
     private Set<Submission> submissions;
 
+    Assignment() {}
+
     public Assignment(@NonNull String name, @NonNull Subject subject) {
         this.name = name;
         this.subject = subject;

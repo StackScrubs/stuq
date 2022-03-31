@@ -19,6 +19,8 @@ public class Term {
     @OneToMany(mappedBy = "id.term", fetch = FetchType.LAZY)
     private Set<Subject> subjects;
 
+    Term() {}
+
     public Term(@NonNull TermId id) {
         this.id = id;
     }

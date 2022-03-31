@@ -21,6 +21,8 @@ public class SubmissionId implements Serializable {
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Assignment assignment;
 
+    SubmissionId() {}
+
     public SubmissionId(@NonNull Student student, @NonNull Assignment assignment) {
         this.student = student;
         this.assignment = assignment;

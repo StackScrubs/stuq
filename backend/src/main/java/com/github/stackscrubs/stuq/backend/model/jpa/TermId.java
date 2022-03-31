@@ -16,6 +16,8 @@ public class TermId implements Serializable {
     @Column(nullable = false)
     private String period;
 
+    TermId() {}
+
     public TermId(@NonNull int year, @NonNull String period) {
         this.year = year;
         this.period = period;

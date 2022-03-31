@@ -43,6 +43,8 @@ public class Subject {
     @OneToMany(fetch = FetchType.LAZY)
     private Set<Assignment> assignments;
 
+    Subject() {}
+
     public Subject(@NonNull SubjectId id) {
         this.id = id;
     }
