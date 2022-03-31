@@ -3,6 +3,8 @@ package com.github.stackscrubs.stuq.backend.model.jpa;
 import java.util.Objects;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -14,6 +16,7 @@ import org.springframework.lang.NonNull;
 public class User {
     @Id
     @NonNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @NonNull
@@ -29,14 +32,12 @@ public class User {
     @NonNull
     private String password_hash;
 
-    protected User(@NonNull int id,
-                @NonNull String firstName,
-                @NonNull String lastName,
-                String email,
-                String phone,
-                @NonNull String password_hash)
+    protected User( @NonNull String firstName,
+                    @NonNull String lastName,
+                    String email,
+                    String phone,
+                    @NonNull String password_hash)
     {
-        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

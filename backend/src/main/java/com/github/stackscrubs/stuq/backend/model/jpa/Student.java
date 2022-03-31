@@ -14,14 +14,13 @@ public class Student extends User {
   @OneToMany(fetch = FetchType.LAZY)
   private Set<SubmissionId> submissions;
 
-	public Student( @NonNull int id,
-                  @NonNull String firstName,
+	public Student( @NonNull String firstName,
                   @NonNull String lastName,
                   String email,
                   String phone,
                   @NonNull String password_hash)
   	{
-		super(id, firstName, lastName, email, phone, password_hash);
+		super(firstName, lastName, email, phone, password_hash);
 	}
 
   public Set<SubmissionId> getSubmissions() {
