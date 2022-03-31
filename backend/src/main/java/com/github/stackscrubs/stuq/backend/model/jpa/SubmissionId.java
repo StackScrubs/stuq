@@ -15,12 +15,10 @@ public class SubmissionId {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    @Column(nullable = false)
     private Student student;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    @Column(nullable = false)
     private Assignment assignment;
 
     public SubmissionId(@NonNull Student student, @NonNull Assignment assignment) {
