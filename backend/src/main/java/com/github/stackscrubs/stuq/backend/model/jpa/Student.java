@@ -11,8 +11,8 @@ import org.springframework.lang.NonNull;
 @Entity
 public class Student extends User {
 
-  @OneToMany(fetch = FetchType.LAZY)
-  private Set<SubmissionId> submissions;
+  @OneToMany(mappedBy = "id.student", fetch = FetchType.LAZY)
+  private Set<Submission> submissions;
 
 	public Student( @NonNull String firstName,
                   @NonNull String lastName,
@@ -23,7 +23,7 @@ public class Student extends User {
 		super(firstName, lastName, email, phone, password_hash);
 	}
 
-  public Set<SubmissionId> getSubmissions() {
+  public Set<Submission> getSubmissions() {
       return this.submissions;
   }
 

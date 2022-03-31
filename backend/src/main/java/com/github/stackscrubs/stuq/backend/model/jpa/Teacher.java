@@ -12,7 +12,7 @@ import org.springframework.lang.NonNull;
 @Entity
 public class Teacher extends User {
 
-    @ManyToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "teachers", fetch = FetchType.LAZY)
     private Set<Subject> subjects = new HashSet<>();
 
 	public Teacher( @NonNull String firstName,

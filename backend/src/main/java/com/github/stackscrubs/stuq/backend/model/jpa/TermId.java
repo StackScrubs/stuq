@@ -1,5 +1,6 @@
 package com.github.stackscrubs.stuq.backend.model.jpa;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -8,7 +9,7 @@ import javax.persistence.Embeddable;
 import org.springframework.lang.NonNull;
 
 @Embeddable
-public class TermId {
+public class TermId implements Serializable {
     @Column(nullable = false)
     private int year;
     

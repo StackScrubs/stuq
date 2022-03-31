@@ -33,11 +33,10 @@ public class Assignment {
     })
     private Subject subject;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private Set<SubmissionId> submissions;
+    @OneToMany(mappedBy = "id.assignment", fetch = FetchType.LAZY)
+    private Set<Submission> submissions;
 
-    public Assignment(@NonNull int id, @NonNull String name, @NonNull Subject subject) {
-        this.id = id;
+    public Assignment(@NonNull String name, @NonNull Subject subject) {
         this.name = name;
         this.subject = subject;
     }
@@ -54,7 +53,7 @@ public class Assignment {
         return this.subject;
     }
 
-    public Set<SubmissionId> getSubmissions() {
+    public Set<Submission> getSubmissions() {
         return this.submissions;
     }
 

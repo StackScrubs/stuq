@@ -5,6 +5,10 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 
 import org.springframework.lang.NonNull;
 
@@ -13,7 +17,12 @@ public class SubjectId implements Serializable {
     @Column(nullable = false)
     private String code;
     
-    @Column(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(referencedColumnName = "id", nullable = false)
+    @JoinColumns({
+        @JoinColumn(referencedColumnName = "year", nullable = false),
+        @JoinColumn(referencedColumnName = "period", nullable = false)
+    })
     private Term term;
 
     public SubjectId(@NonNull String code, @NonNull Term term) {

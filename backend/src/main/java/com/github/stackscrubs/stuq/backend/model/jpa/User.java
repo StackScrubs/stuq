@@ -2,6 +2,7 @@ package com.github.stackscrubs.stuq.backend.model.jpa;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,21 +16,25 @@ import org.springframework.lang.NonNull;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
     @Id
-    @NonNull
+    @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @NonNull
+    @Column(nullable = false)
     private String firstName;
     
     @NonNull
+    @Column(nullable = false)
     private String lastName;
 
+    @Column
     private String email;
 
+    @Column
     private String phone;
 
-    @NonNull
+    @Column(nullable = false)
     private String password_hash;
 
     protected User( @NonNull String firstName,
