@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <router-link to="/login">Login</router-link> |
+    <router-link to="/login">Login</router-link>
   </nav>
   <router-view />
 </template>
@@ -22,7 +22,7 @@ nav {
     color: #2c3e50;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: blue;
     }
   }
 }

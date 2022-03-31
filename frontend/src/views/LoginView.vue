@@ -16,3 +16,12 @@ export default defineComponent({
     },
 });
 </script>
+
+
+<style lang="scss" scoped>
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+</style>

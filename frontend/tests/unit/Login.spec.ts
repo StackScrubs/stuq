@@ -1,10 +1,13 @@
-import { expect } from "chai";
-import { flushPromises, shallowMount, VueWrapper } from "@vue/test-utils";
-import LoginForm from "@/views/LoginForm.vue";
-import store from "@/store/index.js";
-import router from "@/router/index.js";
+import { expect } from 'chai';import { flushPromises, shallowMount, VueWrapper } from "@vue/test-utils";
+import LoginForm from "@/components/LoginForm.vue";
+import store from "@/store/index";
+import router from "@/router/index";
 
 let wrapper: VueWrapper<any>;
+
+const emailSelector = "[data-testid=email-input]"
+const passwordSelector = "[data-testid=password-input]"
+const loginButtonSelector = "[data-testid=login-button]"
 
 describe("LoginForm.vue", () => {
     beforeEach(() => {
@@ -18,15 +21,17 @@ describe("LoginForm.vue", () => {
         });
     });
 
-    it("Check state is updated upon succesfull login", async () => {
-        const usernameinput = wrapper.find('input[data-testid="username-input"');
-        const passwordinput = wrapper.find('input[data-testid="password-input"');
-        const submitButton = wrapper.find("button");
+    it("checks that BaseInput components are used correctly and recieve data", () => {
+        const initialEmail = "ola@nordmann.no"
+        const initialPassword = "$m3lly6at"
 
-        await usernameinput.setValue("user");
-        await passwordinput.setValue("pass");
-        await submitButton.trigger("click");
+        const emailInput = wrapper.findComponent(emailSelector);
+        const passwordInput = wrapper.findComponent(passwordSelector);
 
-        await flushPromises();
+        emailInput.setValue(initialEmail);
+        passwordInput.setValue(initialPassword);
+
+        expect(wrapper.vm.email).to.equal(initialEmail);
+        expect(wrapper.vm.password).to.equal(initialPassword);
     });
 });
