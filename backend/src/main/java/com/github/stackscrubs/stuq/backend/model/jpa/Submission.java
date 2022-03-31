@@ -18,6 +18,8 @@ public class Submission {
 
     private String feedback;
 
+    Submission() {}
+
     public Submission(@NonNull SubmissionId id, @NonNull boolean isApproved, String feedback) {
         this.id = id;
         this.isApproved = isApproved;
