@@ -1,7 +1,6 @@
 package com.github.stackscrubs.stuq.backend.service;
 
 import com.github.stackscrubs.stuq.backend.model.UserCredentials;
-import com.github.stackscrubs.stuq.backend.model.CredentialsNotFoundException;
 import com.github.stackscrubs.stuq.backend.model.InvalidCredentialsException;
 import com.github.stackscrubs.stuq.backend.model.SessionNotFoundException;
 import com.github.stackscrubs.stuq.backend.model.jpa.Session;
