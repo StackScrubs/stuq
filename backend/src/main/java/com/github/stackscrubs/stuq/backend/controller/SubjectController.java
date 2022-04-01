@@ -69,17 +69,17 @@ public class SubjectController {
         return this.subjectService.getAssignments(new TermId(termYear, termPeriod), code);
     }
     
-    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void create(@RequestBody CreateSubjectRequest request) {
         this.subjectService.create(new TermId(request.getTermYear(), request.getTermPeriod()), request.getCode(), request.getName());
     }
 
-    @PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void update(@RequestBody CreateSubjectRequest request) {
         this.subjectService.update(new TermId(request.getTermYear(), request.getTermPeriod()), request.getCode(), request.getName());
     }
 
-    @DeleteMapping(value = "/{termYear}/{termPeriod}/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{termYear}/{termPeriod}/{code}")
     public void delete(
         @PathVariable int termYear,
         @PathVariable String termPeriod,
