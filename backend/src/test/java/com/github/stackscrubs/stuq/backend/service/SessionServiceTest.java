@@ -82,6 +82,6 @@ public class SessionServiceTest {
 
     @Test
     public void deleteSession_invalidToken_throwsNotFoundException() {
-        assertThrows(SessionNotFoundException.class, () -> sessionService.delete(new byte[Session.TOKEN_BYTES]));
+        assertThrows(SessionNotFoundException.class, () -> sessionService.delete(new byte[Session.TOKEN_SIZE]));
     }
 }
