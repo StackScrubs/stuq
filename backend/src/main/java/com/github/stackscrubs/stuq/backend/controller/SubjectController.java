@@ -5,7 +5,6 @@ import java.util.List;
 import com.github.stackscrubs.stuq.backend.model.CreateSubjectRequest;
 import com.github.stackscrubs.stuq.backend.model.jpa.Assignment;
 import com.github.stackscrubs.stuq.backend.model.jpa.Subject;
-import com.github.stackscrubs.stuq.backend.model.jpa.SubjectId;
 import com.github.stackscrubs.stuq.backend.model.jpa.Teacher;
 import com.github.stackscrubs.stuq.backend.model.jpa.TeachingAssistant;
 import com.github.stackscrubs.stuq.backend.model.jpa.TermId;

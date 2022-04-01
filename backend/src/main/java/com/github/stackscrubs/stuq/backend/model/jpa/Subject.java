@@ -62,6 +62,10 @@ public class Subject {
         return this.id;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     public Set<Teacher> getTeachers() {
         return this.teachers;
     }
