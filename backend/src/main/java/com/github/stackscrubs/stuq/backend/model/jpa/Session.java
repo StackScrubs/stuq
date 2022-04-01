@@ -9,7 +9,10 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.springframework.lang.NonNull;
 
@@ -20,16 +23,19 @@ public class Session {
     public static final int TOKEN_BYTES = 32;
 
     @Id
-    private final byte[] token;
+    private byte[] token;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false)
+    private User user;
 
     @Column(nullable = false)
-    private final User user;
-
-    @Column(nullable = false)
-    private final Instant absoluteExpiry;
+    private Instant absoluteExpiry;
 
     @Column(nullable = false)
     private Instant idleExpiry;
+
+    Session() {}
 
     public Session(@NonNull User user) {
         Instant now = Instant.now();

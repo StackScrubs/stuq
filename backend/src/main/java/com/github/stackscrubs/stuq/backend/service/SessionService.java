@@ -9,7 +9,9 @@ import com.github.stackscrubs.stuq.backend.repository.SessionRepository;
 import com.github.stackscrubs.stuq.backend.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SessionService {
     @Autowired
     private UserRepository userRepository;

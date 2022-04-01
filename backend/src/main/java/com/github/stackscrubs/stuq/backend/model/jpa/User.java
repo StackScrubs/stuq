@@ -11,20 +11,14 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
+import com.github.stackscrubs.stuq.backend.model.PasswordEncoder;
+
 import org.springframework.lang.NonNull;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "`user`")
 public class User {
-    private static final Pbkdf2PasswordEncoder PASSWORD_ENCODER = new Pbkdf2PasswordEncoder(
-        System.getenv("PASSWORD_SECRET"),
-        16,
-        200_000, 
-        512
-    );
-
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,7 +52,7 @@ public class User {
         this.lastName = Objects.requireNonNull(lastName, "lastName cannot be null");
         this.email = Objects.requireNonNull(email, "email cannot be null");
         this.phone = phone;
-        this.passwordHash = PASSWORD_ENCODER.encode(Objects.requireNonNull(password, "password cannot be null"));
+        this.passwordHash = PasswordEncoder.getInstance().encode(Objects.requireNonNull(password, "password cannot be null"));
     }
 
     public int getId() {
@@ -98,11 +92,11 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.passwordHash = PASSWORD_ENCODER.encode(password);
+        this.passwordHash = PasswordEncoder.getInstance().encode(password);
     }
 
     public boolean passwordMatches(String password) {
-        return PASSWORD_ENCODER.matches(password, this.passwordHash);
+        return PasswordEncoder.getInstance().matches(password, this.passwordHash);
     }
 
     @Override
