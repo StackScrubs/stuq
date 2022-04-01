@@ -28,4 +28,10 @@ export default defineComponent({
 img {
   max-width: 50vw;
 }
+
+@media screen and (min-width: 600px) {
+  img {
+    max-width: 500px;
+  }
+}
 </style>
