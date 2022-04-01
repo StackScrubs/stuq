@@ -50,7 +50,6 @@ export default {
 label {
   display: inline-block;
   width: 60px;
-  text-align: right;
 }
 
 p {
