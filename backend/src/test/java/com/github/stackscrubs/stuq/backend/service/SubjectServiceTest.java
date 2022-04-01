@@ -9,7 +9,9 @@ import com.github.stackscrubs.stuq.backend.model.SubjectAlreadyExistsException;
 import com.github.stackscrubs.stuq.backend.model.SubjectNotFoundException;
 import com.github.stackscrubs.stuq.backend.model.TermNotFoundException;
 import com.github.stackscrubs.stuq.backend.model.jpa.Subject;
+import com.github.stackscrubs.stuq.backend.model.jpa.Term;
 import com.github.stackscrubs.stuq.backend.model.jpa.TermId;
+import com.github.stackscrubs.stuq.backend.repository.TermRepository;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +26,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class SubjectServiceTest {
     @Autowired
     SubjectService subjectService;
+
+    @Autowired
+    TermRepository termRepository;
     
     @Test
     public void getSubject_getNonExistentSubjectInNonExistentTerm_throwsException() {
@@ -35,7 +40,10 @@ public class SubjectServiceTest {
 
     @Test
     public void getSubject_getSubjectInNonExistentTerm_throwsException() {
-        this.subjectService.create(new TermId(2022, "H"), "IDATTULLBALL", "Hestefôr");
+        Term term = new Term(new TermId(2022, "H"));
+        this.termRepository.save(term);
+
+        this.subjectService.create(term.getId(), "IDATTULLBALL", "Hestefôr");
 
         assertThrows(
             TermNotFoundException.class,
@@ -45,58 +53,71 @@ public class SubjectServiceTest {
 
     @Test
     public void getSubject_getNonExistentSubjectInExistingTerm_throwsException() {
-        TermId termId = new TermId(2022, "V");
-        this.subjectService.create(termId, "IDATTULLBALL", "Hestefôr");
+        Term term = new Term(new TermId(2022, "V"));
+        this.termRepository.save(term);
+
+        this.subjectService.create(term.getId(), "IDATTULLBALL", "Hestefôr");
 
         assertThrows(
             SubjectNotFoundException.class,
-            () -> this.subjectService.getSubject(termId, "test")
+            () -> this.subjectService.getSubject(term.getId(), "test")
         );
     }
 
     @Test
     public void getSubject_getExistingSubjectInExistingTerm_returnsSubject() {
-        TermId termId = new TermId(2022, "V");
+        Term term = new Term(new TermId(2022, "V"));
+        this.termRepository.save(term);
+
         String subjectCode = "IFYTT1001";
         String subjectName = "Fysikk Trondheim";
 
-        this.subjectService.create(termId, subjectCode, subjectName);
+        this.subjectService.create(term.getId(), subjectCode, subjectName);
 
-        assertEquals(subjectName, this.subjectService.getSubject(termId, subjectCode).getName());
+        assertEquals(subjectName, this.subjectService.getSubject(term.getId(), subjectCode).getName());
     }
 
     @Test
     public void create_createExistingSubject_throwsException() {
-        TermId termId = new TermId(2021, "V");
+        Term term = new Term(new TermId(2021, "V"));
+        this.termRepository.save(term);
+
         String subjectCode = "IDATT2104";
         String subjectName = "Nettverksprogrammering";
 
-        this.subjectService.create(termId, subjectCode, subjectName);
+        this.subjectService.create(term.getId(), subjectCode, subjectName);
 
-        assertThrows(SubjectAlreadyExistsException.class, () -> this.subjectService.create(termId, subjectCode, subjectName));
+        assertThrows(
+            SubjectAlreadyExistsException.class,
+            () -> this.subjectService.create(term.getId(), subjectCode, subjectName)
+        );
     }
 
     @Test
     public void create_createNonExistentSubject_createsSubject() {
-        TermId termId = new TermId(2023, "V");
+        Term term = new Term(new TermId(2023, "V"));
+        this.termRepository.save(term);
+
         String subjectCode = "IDATT2104";
         String subjectName = "Fullstack";
-        this.subjectService.create(termId, subjectCode, subjectName);
+        this.subjectService.create(term.getId(), subjectCode, subjectName);
 
-        assertEquals(subjectName, this.subjectService.getSubject(termId, subjectCode).getName());
+        assertEquals(subjectName, this.subjectService.getSubject(term.getId(), subjectCode).getName());
     }
 
     @Test
     public void update_updateExistingSubject_updatesSubject() {
-        TermId termId = new TermId(2024, "V");
+        Term term = new Term(new TermId(2024, "V"));
+        this.termRepository.save(term);
+        
         String subjectCode = "IDATT2104";
         String misspelledSubjectName = "Fullstacksasasas";
-        this.subjectService.create(termId, subjectCode, misspelledSubjectName);
+        this.subjectService.create(term.getId(), subjectCode, misspelledSubjectName);
 
         String fixedSubjectName = "Fullstack";
-        this.subjectService.update(termId, subjectCode, fixedSubjectName);
+        this.subjectService.update(term.getId(), subjectCode, subjectCode, fixedSubjectName);
 
-        Subject subject = this.subjectService.getSubject(termId, subjectCode);
+        Subject subject = this.subjectService.getSubject(term.getId(), subjectCode);
         String actualSubjectName = subject.getName();
 
         assertEquals(fixedSubjectName, actualSubjectName);
@@ -113,13 +134,15 @@ public class SubjectServiceTest {
 
     @Test
     public void delete_deleteExistingSubject_deletesException() {
-        TermId termId = new TermId(2025, "V");
+        Term term = new Term(new TermId(2025, "V"));
+        this.termRepository.save(term);
+
         String subjectCode = "IDATT2104";
         String subjectName = "Fullstack";
-        this.subjectService.create(termId, subjectCode, subjectName);
+        this.subjectService.create(term.getId(), subjectCode, subjectName);
 
-        this.subjectService.delete(termId, subjectCode);
+        this.subjectService.delete(term.getId(), subjectCode);
 
-        assertThrows(SubjectNotFoundException.class, () -> this.subjectService.getSubject(termId, subjectCode));
+        assertThrows(SubjectNotFoundException.class, () -> this.subjectService.getSubject(term.getId(), subjectCode));
     }
 }

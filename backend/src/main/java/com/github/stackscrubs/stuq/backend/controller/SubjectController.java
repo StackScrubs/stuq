@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +43,7 @@ public class SubjectController {
         return this.subjectService.getSubject(new TermId(termYear, termPeriod), code);
     }
 
-    @GetMapping(value = "/teaching_assistants/{termYear}/{termPeriod}/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{termYear}/{termPeriod}/{code}/teaching-assistants", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Teacher> getTeachers(
         @PathVariable int termYear,
         @PathVariable String termPeriod,
@@ -51,7 +52,7 @@ public class SubjectController {
         return this.subjectService.getTeachers(new TermId(termYear, termPeriod), code);
     }
 
-    @GetMapping(value = "/teachers/{termYear}/{termPeriod}/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{termYear}/{termPeriod}/{code}/teachers", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TeachingAssistant> getTeachingAssistants(
         @PathVariable int termYear,
         @PathVariable String termPeriod,
@@ -60,7 +61,7 @@ public class SubjectController {
         return this.subjectService.getTeachingAssistants(new TermId(termYear, termPeriod), code);
     }
 
-    @GetMapping(value = "/assignments/{termYear}/{termPeriod}/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{termYear}/{termPeriod}/{code}/assignments", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Assignment> getAssignments(
         @PathVariable int termYear,
         @PathVariable String termPeriod,
@@ -74,9 +75,19 @@ public class SubjectController {
         this.subjectService.create(new TermId(request.getTermYear(), request.getTermPeriod()), request.getCode(), request.getName());
     }
 
-    @PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@RequestBody CreateSubjectRequest request) {
-        this.subjectService.update(new TermId(request.getTermYear(), request.getTermPeriod()), request.getCode(), request.getName());
+    @PutMapping(value = "/{termYear}/{termPeriod}/{code}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void update(
+        @PathVariable int termYear,
+        @PathVariable String termPeriod,
+        @PathVariable String code,
+        @RequestBody CreateSubjectRequest request
+    ) {
+        this.subjectService.update(
+            new TermId(termYear, termPeriod),
+            code,
+            request.getCode(),
+            request.getName()
+        );
     }
 
     @DeleteMapping(value = "/{termYear}/{termPeriod}/{code}")

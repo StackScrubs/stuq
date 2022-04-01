@@ -107,9 +107,7 @@ public class SubjectService {
      * @throws SubjectAlreadyExistsException The subject already exists.
      */
     public void create(TermId termId, String subjectCode, String subjectName) {
-        Term term = this.termRepository.existsById(termId)
-                    ? this.termRepository.getById(termId)
-                    : this.termRepository.save(new Term(termId));
+        Term term = this.getTermOrThrow(termId);
 
         SubjectId subjectId = new SubjectId(subjectCode, term);
         if (this.subjectRepository.existsById(subjectId)) {
@@ -120,34 +118,44 @@ public class SubjectService {
                 + subjectCode + " as it already exists"
             );
             throw new SubjectAlreadyExistsException();
-        } else {
-            this.subjectRepository.save(new Subject(subjectId, subjectName));
         }
+
+        this.subjectRepository.save(new Subject(subjectId, subjectName));
     }
 
     /**
      * Updates a subject with a given subject code and name that takes place during the given term.
      * @param termId The ID of the term in which the subject takes place.
-     * @param subjectCode The subject's code.
-     * @param subjectName The subject's full name.
+     * @param oldSubjectCode The subject's old code.
+     * @param newSubjectCode The new subject code to set.
+     * @param newSubjectName The subject's new full name.
      * @throws TermNotFoundException The term with the given ID is not registered in the database.
      * @throws SubjectNotFoundException The subject code is not registered in the database.
      */
-    public void update(TermId termId, String subjectCode, String subjectName) {
+    public void update(
+        TermId termId,
+        String oldSubjectCode,
+        String newSubjectCode,
+        String newSubjectName
+    ) {
         Term term = this.getTermOrThrow(termId);
 
-        SubjectId subjectId = new SubjectId(subjectCode, term);
-        if (!this.subjectRepository.existsById(subjectId)) {
+        SubjectId oldSubjectId = new SubjectId(oldSubjectCode, term);
+        if (!this.subjectRepository.existsById(oldSubjectId)) {
             logger.info(
                 "Failed to find subject with term year="
                 + termId.getYear() + ", term period="
                 + termId.getPeriod() + "and code="
-                + subjectCode
+                + oldSubjectCode
             );
             throw new SubjectNotFoundException();
-        } else {
-            this.subjectRepository.save(new Subject(subjectId, subjectName));
         }
+        
+        SubjectId newSubjectId = new SubjectId(newSubjectCode, term);
+        this.subjectRepository.save(new Subject(newSubjectId, newSubjectName));
+
+        if (!oldSubjectId.equals(newSubjectId))
+            this.subjectRepository.deleteById(oldSubjectId);
     }
 
     /**
