@@ -72,7 +72,7 @@ public class Session {
     }
 
     public User getUser() {
-        throwIfExpired();
+        this.throwIfExpired();
         return this.user;
     }
 }
