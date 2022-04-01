@@ -12,7 +12,6 @@ import com.github.stackscrubs.stuq.backend.model.jpa.User;
 import com.github.stackscrubs.stuq.backend.repository.SessionRepository;
 import com.github.stackscrubs.stuq.backend.repository.UserRepository;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
