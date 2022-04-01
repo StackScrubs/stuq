@@ -3,15 +3,15 @@ package com.github.stackscrubs.stuq.backend.repository;
 import java.util.List;
 import java.util.Optional;
 
-import com.github.stackscrubs.stuq.backend.model.jpa.User;
+import com.github.stackscrubs.stuq.backend.model.jpa.Session;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface SessionRepository extends JpaRepository<User, byte[]> {
+public interface SessionRepository extends JpaRepository<Session, byte[]> {
     
-    Optional<User> findById(byte[] token);
+    Optional<Session> findById(byte[] token);
 
-    List<User> findAll();
+    List<Session> findAll();
 
     void deleteById(byte[] token);
 }

@@ -11,6 +11,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
+import com.github.stackscrubs.stuq.backend.model.PasswordEncoder;
+
 import org.springframework.lang.NonNull;
 
 @Entity
@@ -22,15 +24,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NonNull
     @Column(nullable = false)
     private String firstName;
     
-    @NonNull
     @Column(nullable = false)
     private String lastName;
 
-    @Column
+    @Column(nullable = false)
     private String email;
 
     @Column
@@ -41,17 +41,18 @@ public class User {
 
     User() {}
 
-    protected User( @NonNull String firstName,
-                    @NonNull String lastName,
-                    String email,
-                    String phone,
-                    @NonNull String passwordHash)
-    {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+    protected User( 
+        @NonNull String firstName,
+        @NonNull String lastName,
+        @NonNull String email,
+        String phone,
+        @NonNull String password
+    ) {
+        this.firstName = Objects.requireNonNull(firstName, "firstName cannot be null");
+        this.lastName = Objects.requireNonNull(lastName, "lastName cannot be null");
+        this.email = Objects.requireNonNull(email, "email cannot be null");
         this.phone = phone;
-        this.passwordHash = passwordHash;
+        this.passwordHash = PasswordEncoder.getInstance().encode(Objects.requireNonNull(password, "password cannot be null"));
     }
 
     public int getId() {
@@ -90,18 +91,24 @@ public class User {
         this.phone = phone;
     }
 
-    public String getPasswordHash() {
-        return this.passwordHash;
+    public void setPassword(String password) {
+        this.passwordHash = PasswordEncoder.getInstance().encode(password);
+    }
+
+    public boolean passwordMatches(String password) {
+        return PasswordEncoder.getInstance().matches(password, this.passwordHash);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id,
-                            this.firstName,
-                            this.lastName,
-                            this.email,
-                            this.phone,
-                            this.passwordHash);
+        return Objects.hash(
+            this.id,
+            this.firstName,
+            this.lastName,
+            this.email,
+            this.phone,
+            this.passwordHash
+        );
     }
 
     @Override

@@ -11,22 +11,23 @@ import org.springframework.lang.NonNull;
 @Entity
 public class Student extends User {
 
-  @OneToMany(mappedBy = "id.student", fetch = FetchType.LAZY)
-  private Set<Submission> submissions;
+	@OneToMany(mappedBy = "id.student", fetch = FetchType.LAZY)
+	private Set<Submission> submissions;
 
 	Student() {}
 
-  public Student( @NonNull String firstName,
-                  @NonNull String lastName,
-                  String email,
-                  String phone,
-                  @NonNull String password_hash)
-  	{
-		super(firstName, lastName, email, phone, password_hash);
+	public Student( 
+		@NonNull String firstName,
+		@NonNull String lastName,
+		@NonNull String email,
+		String phone,
+		@NonNull String password
+	) {
+		super(firstName, lastName, email, phone, password);
 	}
 
-  public Set<Submission> getSubmissions() {
-      return this.submissions;
-  }
+	public Set<Submission> getSubmissions() {
+		return this.submissions;
+	}
 
 }

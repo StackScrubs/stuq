@@ -17,12 +17,13 @@ public class TeachingAssistant extends User {
 
     TeachingAssistant() {}
 
-    public TeachingAssistant(@NonNull String firstName,
-                            @NonNull String lastName,
-                            String email,
-                            String phone,
-                            @NonNull String password_hash)
-    {
-        super(firstName, lastName, email, phone, password_hash);
-    }
+    public TeachingAssistant(
+		@NonNull String firstName,
+		@NonNull String lastName,
+		@NonNull String email,
+		String phone,
+		@NonNull String password
+	) {
+		super(firstName, lastName, email, phone, password);
+	}
 }

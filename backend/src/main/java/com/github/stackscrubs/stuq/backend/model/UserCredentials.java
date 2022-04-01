@@ -11,7 +11,7 @@ import org.springframework.lang.NonNull;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LoginRequest {
+public class UserCredentials {
 
     @NonNull
     private final String email;
@@ -20,7 +20,7 @@ public class LoginRequest {
     private final String password;
 
     @JsonCreator
-    public LoginRequest(@NonNull String email, @NonNull String password) {
+    public UserCredentials(@NonNull String email, @NonNull String password) {
         this.email = Objects.requireNonNull(email, "email cannot be null");
         this.password = Objects.requireNonNull(password, "password cannot be null");
     }
