@@ -2,46 +2,56 @@ package com.github.stackscrubs.stuq.backend.model.jpa;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 
 import org.springframework.lang.NonNull;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "`user`")
 public class User {
     @Id
-    @NonNull
+    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @NonNull
+    @Column(nullable = false)
     private String firstName;
     
     @NonNull
+    @Column(nullable = false)
     private String lastName;
 
+    @Column
     private String email;
 
+    @Column
     private String phone;
 
-    @NonNull
-    private String password_hash;
+    @Column(nullable = false)
+    private String passwordHash;
 
-    protected User(@NonNull int id,
-                @NonNull String firstName,
-                @NonNull String lastName,
-                String email,
-                String phone,
-                @NonNull String password_hash)
+    User() {}
+
+    protected User( @NonNull String firstName,
+                    @NonNull String lastName,
+                    String email,
+                    String phone,
+                    @NonNull String passwordHash)
     {
-        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
-        this.password_hash = password_hash;
+        this.passwordHash = passwordHash;
     }
 
     public int getId() {
@@ -51,21 +61,37 @@ public class User {
     public String getFirstName() {
         return this.firstName;
     }
+    
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
     public String getLastName() {
         return this.lastName;
     }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
     
     public String getEmail() {
         return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
     
     public String getPhone() {
         return this.phone;
     } 
     
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getPasswordHash() {
-        return this.password_hash;
+        return this.passwordHash;
     }
 
     @Override
@@ -75,7 +101,7 @@ public class User {
                             this.lastName,
                             this.email,
                             this.phone,
-                            this.password_hash);
+                            this.passwordHash);
     }
 
     @Override
@@ -104,10 +130,10 @@ public class User {
                 return false;
         } else if (!this.lastName.equals(other.lastName))
             return false;
-        if (this.password_hash == null) {
-            if (other.password_hash != null)
+        if (this.passwordHash == null) {
+            if (other.passwordHash != null)
                 return false;
-        } else if (!this.password_hash.equals(other.password_hash))
+        } else if (!this.passwordHash.equals(other.passwordHash))
             return false;
         if (this.phone == null) {
             if (other.phone != null)

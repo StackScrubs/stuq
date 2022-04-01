@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -26,15 +27,19 @@ public class Assignment {
     private String name;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    @Column(nullable = false)
+    @JoinColumns({
+        @JoinColumn(referencedColumnName = "code", nullable = false),
+        @JoinColumn(referencedColumnName = "term_year", nullable = false),
+        @JoinColumn(referencedColumnName = "term_period", nullable = false)
+    })
     private Subject subject;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private Set<SubmissionId> submissions;
+    @OneToMany(mappedBy = "id.assignment", fetch = FetchType.LAZY)
+    private Set<Submission> submissions;
 
-    public Assignment(@NonNull int id, @NonNull String name, @NonNull Subject subject) {
-        this.id = id;
+    Assignment() {}
+
+    public Assignment(@NonNull String name, @NonNull Subject subject) {
         this.name = name;
         this.subject = subject;
     }
@@ -51,7 +56,7 @@ public class Assignment {
         return this.subject;
     }
 
-    public Set<SubmissionId> getSubmissions() {
+    public Set<Submission> getSubmissions() {
         return this.submissions;
     }
 
