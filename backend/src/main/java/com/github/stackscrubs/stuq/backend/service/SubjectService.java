@@ -21,6 +21,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * SubjectService handles getting subjects, the subject's teachers and teaching assistants
+ * as well as creation, updating and deletion of subjects.
+ */
 @Service
 public class SubjectService {
     @Autowired
@@ -31,12 +35,28 @@ public class SubjectService {
 
     Logger logger = LoggerFactory.getLogger(SubjectService.class);
 
+    /**
+     * Gets a subject using its subject code and the given term. 
+     * @param termId The ID of the term in which the subject takes place.
+     * @param subjectCode The subject's code.
+     * @return The subject that has the given subject code that takes place during the given term.
+     * @throws TermNotFoundException The term with the given ID is not registered in the database.
+     * @throws SubjectNotFoundException The subject code is not registered in the database.
+     */
     public Subject getSubject(TermId termId, String subjectCode) {
         Term term = this.getTermOrThrow(termId);
 
         return this.getSubjectOrThrow(new SubjectId(subjectCode, term));
     }
-
+    
+    /**
+     * Gets the teachers that teach a certain subject.
+     * @param termId The ID of the term in which the subject takes place.
+     * @param subjectCode The subject's code.
+     * @return A list of teachers that teach the subject with the given subject code that takes place during the given term.
+     * @throws TermNotFoundException The term with the given ID is not registered in the database.
+     * @throws SubjectNotFoundException The subject code is not registered in the database.
+     */
     public List<Teacher> getTeachers(TermId termId, String subjectCode) {
         Term term = this.getTermOrThrow(termId);
 
@@ -45,6 +65,15 @@ public class SubjectService {
         );
     }
 
+    /**
+     * Gets the teaching assistants that assist the teachers in a certain subject.
+     * @param termId The ID of the term in which the subject takes place.
+     * @param subjectCode The subject's code.
+     * @return A list of teaching assistants that assist teachers in a certain subject
+     *         with the given subject code that takes place during the given term.
+     * @throws TermNotFoundException The term with the given ID is not registered in the database.
+     * @throws SubjectNotFoundException The subject code is not registered in the database.
+     */
     public List<TeachingAssistant> getTeachingAssistants(TermId termId, String subjectCode) {
         Term term = this.getTermOrThrow(termId);
 
@@ -53,6 +82,15 @@ public class SubjectService {
         );
     }
 
+    /**
+     * Gets assignments that are handed out to students in a certain subject.
+     * @param termId The ID of the term in which the subject takes place.
+     * @param subjectCode The subject's code.
+     * @return A list assignments that are handed out to students in a certain subject
+     *         with the given subject code that takes place during the given term.
+     * @throws TermNotFoundException The term with the given ID is not registered in the database.
+     * @throws SubjectNotFoundException The subject code is not registered in the database.
+     */
     public List<Assignment> getAssignments(TermId termId, String subjectCode) {
         Term term = this.getTermOrThrow(termId);
 
@@ -61,6 +99,13 @@ public class SubjectService {
         );
     }
 
+    /**
+     * Creates a new subject with a given subject code and name that takes place during the given term.
+     * @param termId The ID of the term in which the subject takes place.
+     * @param subjectCode The subject's code.
+     * @param subjectName The subject's full name.
+     * @throws SubjectAlreadyExistsException The subject already exists.
+     */
     public void create(TermId termId, String subjectCode, String subjectName) {
         Term term = this.termRepository.existsById(termId)
                     ? this.termRepository.getById(termId)
@@ -80,6 +125,14 @@ public class SubjectService {
         }
     }
 
+    /**
+     * Updates a subject with a given subject code and name that takes place during the given term.
+     * @param termId The ID of the term in which the subject takes place.
+     * @param subjectCode The subject's code.
+     * @param subjectName The subject's full name.
+     * @throws TermNotFoundException The term with the given ID is not registered in the database.
+     * @throws SubjectNotFoundException The subject code is not registered in the database.
+     */
     public void update(TermId termId, String subjectCode, String subjectName) {
         Term term = this.getTermOrThrow(termId);
 
@@ -97,6 +150,13 @@ public class SubjectService {
         }
     }
 
+    /**
+     * Deletes a subject with a given subject code that takes place during the given term.
+     * @param termId The ID of the term in which the subject takes place.
+     * @param subjectCode The subject's code.
+     * @throws TermNotFoundException The term with the given ID is not registered in the database.
+     * @throws SubjectNotFoundException The subject code is not registered in the database.
+     */
     public void delete(TermId termId, String subjectCode) {
         Term term = this.getTermOrThrow(termId);
 
@@ -114,6 +174,12 @@ public class SubjectService {
         }
     }
 
+    /**
+     * Helper method for getting a term or throwing an exception if it does not exist.
+     * @param termId The ID of the term to get.
+     * @return The term with the given ID.
+     * @throws TermNotFoundException The term with the given ID is not registered in the database.
+     */
     private Term getTermOrThrow(TermId termId) {
         return this.termRepository.findById(termId)
             .orElseThrow(() -> {
@@ -127,6 +193,12 @@ public class SubjectService {
         );
     }
 
+    /**
+     * Helper method for getting a subject or throwing an exception if it does not exist.
+     * @param subjectId The ID of the subject to get.
+     * @return The subject with the given ID.
+     * @throws SubjectNotFoundException The subject with the given ID is not registered in the database.
+     */
     private Subject getSubjectOrThrow(SubjectId subjectId) {
         TermId termId = subjectId.getTerm().getId();
 
