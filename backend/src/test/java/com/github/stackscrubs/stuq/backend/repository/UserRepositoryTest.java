@@ -31,19 +31,19 @@ public class UserRepositoryTest {
     
     @Test
     public void save_saveNewUser_DoesNotThrow() {
-        User user = (User) new Student("John", "Doe", null, "98989898", "_");
+        User user = (User) new Student("John", "Doe", "em@ail.com", "98989898", "_");
         User userSaved = this.userRepository.save(user);
     }
 
     @Test
     public void getById_getExistingUser_doesNotThrow() {
-        int userId = this.userRepository.save((User) new Student("test", "test", null, null, "-")).getId();
+        int userId = this.userRepository.save((User) new Student("test", "test", "test@example.com", null, "-")).getId();
         User user = this.userRepository.getById(userId);
     }
 
     @Test
     public void deleteById_deleteUser_doesNotThrow() {
-        int userId = this.userRepository.save((User) new Student("test", "test", null, null, "-")).getId();
+        int userId = this.userRepository.save((User) new Student("test", "test", "test@example.com", null, "-")).getId();
         this.userRepository.deleteById(userId);
     }
 
@@ -52,7 +52,7 @@ public class UserRepositoryTest {
         String initialName = "Johnb";
         String fixedName = "John";
 
-        User user = (User) new Student(initialName, "Doe", null, "98989898", "_");
+        User user = (User) new Student(initialName, "Doe", "test@example.com", "98989898", "_");
 
         user = this.userRepository.save(user);
         user.setFirstName(fixedName);
@@ -71,7 +71,7 @@ public class UserRepositoryTest {
         final int USERS_TO_ADD = 10;
 
         for (int i = 0; i < USERS_TO_ADD; i++)
-            users.add((User) new Student("Test1", "Test2", null, null, "s"));
+            users.add((User) new Student("Test1", "Test2", "test3@example.com", null, "s"));
 
         this.userRepository.saveAll(users);
 
