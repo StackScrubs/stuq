@@ -16,6 +16,9 @@ import javax.persistence.ManyToOne;
 
 import org.springframework.lang.NonNull;
 
+/**
+ * Session represents a session for a specific user.
+ */
 @Entity
 public class Session {
     public static final Duration ABSOLUTE_EXPIRY_DURATION = Duration.ofMinutes(30);

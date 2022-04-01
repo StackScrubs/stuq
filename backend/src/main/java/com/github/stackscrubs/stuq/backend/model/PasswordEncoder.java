@@ -6,6 +6,9 @@ import java.util.Properties;
 
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 
+/**
+ * PasswordEncoder performs hashing operations on passwords to make them irretrievable.
+ */
 public class PasswordEncoder extends Pbkdf2PasswordEncoder {
     private static final int SALT_LENGTH = 16;
     private static final int ITERS = 200_000;

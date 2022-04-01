@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.MediaType;
 
+/**
+ * SessionController handles requests for the SessionService.
+ */
 @RestController
 @RequestMapping(value = "/session")
 @EnableAutoConfiguration
@@ -25,8 +28,6 @@ import org.springframework.http.MediaType;
 public class SessionController {
     @Autowired
     private SessionService service;
-
-    Logger logger = LoggerFactory.getLogger(SessionController.class);
 
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Session create(@RequestBody UserCredentials credentials) {
