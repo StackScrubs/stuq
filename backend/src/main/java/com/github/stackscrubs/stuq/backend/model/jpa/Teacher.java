@@ -15,14 +15,15 @@ public class Teacher extends User {
     @ManyToMany(mappedBy = "teachers", fetch = FetchType.LAZY)
     private Set<Subject> subjects = new HashSet<>();
 
-	  Teacher() {}
+    Teacher() {}
 
-    public Teacher( @NonNull String firstName,
-                  @NonNull String lastName,
-                  String email,
-                  String phone,
-                  @NonNull String password_hash)
-    {
-		  super(firstName, lastName, email, phone, password_hash);
-	  }
+    public Teacher(
+        @NonNull String firstName,
+		@NonNull String lastName,
+		@NonNull String email,
+		String phone,
+		@NonNull String password
+	) {
+		super(firstName, lastName, email, phone, password);
+	}
 }

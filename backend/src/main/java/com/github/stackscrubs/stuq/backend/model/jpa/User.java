@@ -30,15 +30,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NonNull
     @Column(nullable = false)
     private String firstName;
     
-    @NonNull
     @Column(nullable = false)
     private String lastName;
 
-    @Column
+    @Column(nullable = false)
     private String email;
 
     @Column
@@ -52,15 +50,15 @@ public class User {
     protected User( 
         @NonNull String firstName,
         @NonNull String lastName,
-        String email,
+        @NonNull String email,
         String phone,
-        @NonNull String passwordHash
+        @NonNull String password
     ) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+        this.firstName = Objects.requireNonNull(firstName, "firstName cannot be null");
+        this.lastName = Objects.requireNonNull(lastName, "lastName cannot be null");
+        this.email = Objects.requireNonNull(email, "email cannot be null");
         this.phone = phone;
-        this.passwordHash = passwordHash;
+        this.passwordHash = PASSWORD_ENCODER.encode(Objects.requireNonNull(password, "password cannot be null"));
     }
 
     public int getId() {
@@ -99,8 +97,8 @@ public class User {
         this.phone = phone;
     }
 
-    public String getPasswordHash() {
-        return this.passwordHash;
+    public void setPassword(String password) {
+        this.passwordHash = PASSWORD_ENCODER.encode(password);
     }
 
     public boolean passwordMatches(String password) {
