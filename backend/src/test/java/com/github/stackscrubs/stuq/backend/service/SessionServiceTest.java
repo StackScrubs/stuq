@@ -36,7 +36,6 @@ public class SessionServiceTest {
     @Autowired
     UserRepository userRepository;
 
-
     User user;
 
     @BeforeEach
