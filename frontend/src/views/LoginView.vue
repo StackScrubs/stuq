@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <img src="../assets/logo.png" alt="logo" />
+    <img src="@/assets/stuq-big.png" alt="logo" />
     <LoginForm />
   </div>
 </template>
@@ -23,5 +23,9 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+img {
+  max-width: 50vw;
 }
 </style>

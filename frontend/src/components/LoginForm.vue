@@ -6,7 +6,6 @@
       v-model="email"
       type="email"
       class="base-input-field"
-      placeholder="ola@nordman.no"
       data-testid="email-input"
       :error="errors.email"
     />
