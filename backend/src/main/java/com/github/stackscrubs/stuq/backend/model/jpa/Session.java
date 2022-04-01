@@ -20,7 +20,7 @@ import org.springframework.lang.NonNull;
 public class Session {
     public static final Duration ABSOLUTE_EXPIRY_DURATION = Duration.ofMinutes(30);
     public static final Duration IDLE_EXPIRY_DURATION = Duration.ofHours(4);
-    public static final int TOKEN_BYTES = 32;
+    public static final int TOKEN_SIZE = 32;
 
     @Id
     private byte[] token;
@@ -46,7 +46,7 @@ public class Session {
     }
 
     private static byte[] generateToken() {
-        byte[] token = new byte[TOKEN_BYTES];
+        byte[] token = new byte[TOKEN_SIZE];
         try {
             SecureRandom.getInstanceStrong().nextBytes(token);
         } catch (NoSuchAlgorithmException e) {
