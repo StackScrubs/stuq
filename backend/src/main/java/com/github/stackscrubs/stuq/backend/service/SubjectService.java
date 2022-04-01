@@ -208,10 +208,9 @@ public class SubjectService {
      * @throws SubjectNotFoundException The subject with the given ID is not registered in the database.
      */
     private Subject getSubjectOrThrow(SubjectId subjectId) {
-        TermId termId = subjectId.getTerm().getId();
-
         return this.subjectRepository.findById(subjectId)
-            .orElseThrow(() -> {
+        .orElseThrow(() -> {
+                TermId termId = subjectId.getTerm().getId();
                 logger.info(
                     "Failed to find subject with term year="
                     + termId.getYear() + ", term period="
