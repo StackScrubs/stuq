@@ -68,7 +68,7 @@ public class Session {
     }
 
     private void throwIfExpired() {
-        if (isExpired()) throw new IllegalStateException("the session is expired");
+        if (this.isExpired()) throw new IllegalStateException("the session is expired");
     }
 
     public User getUser() {
