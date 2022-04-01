@@ -3,7 +3,7 @@ import { Session } from "@/types/Session";
 import axios, { AxiosResponse } from "axios";
 
 const CONFIG = {
-    baseURL: "API AUTH SERVER URL" + "/login", //Set from .env
+    baseURL: process.env.VUE_APP_DEV_API_ENDPOINT + "/session",
     withCredentials: false,
     headers: {
         Accept: "application/json",
