@@ -19,7 +19,9 @@ import com.github.stackscrubs.stuq.backend.repository.TermRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SubjectService {
     @Autowired
     private SubjectRepository subjectRepository;
@@ -59,7 +61,7 @@ public class SubjectService {
         );
     }
 
-    public void create(TermId termId, String subjectCode) {
+    public void create(TermId termId, String subjectCode, String subjectName) {
         Term term = this.termRepository.existsById(termId)
                     ? this.termRepository.getById(termId)
                     : this.termRepository.save(new Term(termId));
@@ -74,11 +76,11 @@ public class SubjectService {
             );
             throw new SubjectAlreadyExistsException();
         } else {
-            this.subjectRepository.save(new Subject(subjectId));
+            this.subjectRepository.save(new Subject(subjectId, subjectName));
         }
     }
 
-    public void update(TermId termId, String subjectCode) {
+    public void update(TermId termId, String subjectCode, String subjectName) {
         Term term = this.getTermOrThrow(termId);
 
         SubjectId subjectId = new SubjectId(subjectCode, term);
@@ -91,7 +93,7 @@ public class SubjectService {
             );
             throw new SubjectNotFoundException();
         } else {
-            this.subjectRepository.save(new Subject(subjectId));
+            this.subjectRepository.save(new Subject(subjectId, subjectName));
         }
     }
 

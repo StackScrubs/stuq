@@ -5,6 +5,7 @@ import java.util.List;
 import com.github.stackscrubs.stuq.backend.model.CreateSubjectRequest;
 import com.github.stackscrubs.stuq.backend.model.jpa.Assignment;
 import com.github.stackscrubs.stuq.backend.model.jpa.Subject;
+import com.github.stackscrubs.stuq.backend.model.jpa.SubjectId;
 import com.github.stackscrubs.stuq.backend.model.jpa.Teacher;
 import com.github.stackscrubs.stuq.backend.model.jpa.TeachingAssistant;
 import com.github.stackscrubs.stuq.backend.model.jpa.TermId;
@@ -30,7 +31,7 @@ public class SubjectController {
     @Autowired
     private SubjectService subjectService;
 
-    @GetMapping(value = "/{term_year}/{term_period}/{code}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{termYear}/{termPeriod}/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Subject getById(
         @PathVariable int termYear,
         @PathVariable String termPeriod,
@@ -39,7 +40,7 @@ public class SubjectController {
         return this.subjectService.getSubject(new TermId(termYear, termPeriod), code);
     }
 
-    @GetMapping(value = "/teaching_assistants/{term_year}/{term_period}/{code}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/teaching_assistants/{termYear}/{termPeriod}/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Teacher> getTeachers(
         @PathVariable int termYear,
         @PathVariable String termPeriod,
@@ -48,7 +49,7 @@ public class SubjectController {
         return this.subjectService.getTeachers(new TermId(termYear, termPeriod), code);
     }
 
-    @GetMapping(value = "/teachers/{term_year}/{term_period}/{code}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/teachers/{termYear}/{termPeriod}/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TeachingAssistant> getTeachingAssistants(
         @PathVariable int termYear,
         @PathVariable String termPeriod,
@@ -57,7 +58,7 @@ public class SubjectController {
         return this.subjectService.getTeachingAssistants(new TermId(termYear, termPeriod), code);
     }
 
-    @GetMapping(value = "/assignments/{term_year}/{term_period}/{code}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/assignments/{termYear}/{termPeriod}/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Assignment> getAssignments(
         @PathVariable int termYear,
         @PathVariable String termPeriod,
@@ -68,15 +69,15 @@ public class SubjectController {
     
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void create(@RequestBody CreateSubjectRequest request) {
-        this.subjectService.create(new TermId(request.getTermYear(), request.getTermPeriod()), request.getCode());
+        this.subjectService.create(new TermId(request.getTermYear(), request.getTermPeriod()), request.getCode(), request.getName());
     }
 
     @PostMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void update(@RequestBody CreateSubjectRequest request) {
-        this.subjectService.update(new TermId(request.getTermYear(), request.getTermPeriod()), request.getCode());
+        this.subjectService.update(new TermId(request.getTermYear(), request.getTermPeriod()), request.getCode(), request.getName());
     }
 
-    @DeleteMapping(value = "/{term_year}/{term_period}/{code}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{termYear}/{termPeriod}/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
     public void delete(
         @PathVariable int termYear,
         @PathVariable String termPeriod,

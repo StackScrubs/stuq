@@ -15,6 +15,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.springframework.lang.NonNull;
 
 @Entity
@@ -24,29 +26,36 @@ public class Subject {
     @Column(nullable = false)
     private SubjectId id;
 
+    @Column(nullable = false)
+    private String name;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "subject_teacher", joinColumns = {
         @JoinColumn(name = "teacher", nullable = false),
         @JoinColumn(name = "subject_code", nullable = false),
         @JoinColumn(name = "subject_term", nullable = false)
     })
+    @JsonIgnore
     private Set<Teacher> teachers = new HashSet<>();
-
+    
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "subject_teaching_assistant", joinColumns = {
         @JoinColumn(name = "teaching_assistant", nullable = false),
         @JoinColumn(name = "subject_code", nullable = false),
         @JoinColumn(name = "subject_term", nullable = false)
     })
+    @JsonIgnore
     private Set<TeachingAssistant> teachingAssistants = new HashSet<>();
-
+    
     @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Assignment> assignments;
 
     Subject() {}
 
-    public Subject(@NonNull SubjectId id) {
-        this.id = id;
+    public Subject(@NonNull SubjectId id, @NonNull String name) {
+        this.id = Objects.requireNonNull(id, "id cannot be null");
+        this.name = Objects.requireNonNull(name, "name cannot be null");
     }
 
     public SubjectId getId() {
@@ -67,7 +76,7 @@ public class Subject {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.teachers, this.teachingAssistants, this.assignments);
+        return Objects.hash(this.id, this.teachers, this.teachingAssistants, this.assignments, this.name);
     }
 
     @Override
@@ -88,6 +97,11 @@ public class Subject {
             if (other.id != null)
                 return false;
         } else if (!this.id.equals(other.id))
+            return false;
+        if (this.name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!this.name.equals(other.name))
             return false;
         if (this.teachers == null) {
             if (other.teachers != null)
