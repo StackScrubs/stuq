@@ -1,8 +1,8 @@
 package com.github.stackscrubs.stuq.backend.model.jpa;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -11,17 +11,17 @@ import javax.persistence.ManyToOne;
 import org.springframework.lang.NonNull;
 
 @Embeddable
-public class SubmissionId {
+public class SubmissionId implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    @Column(nullable = false)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private Student student;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    @Column(nullable = false)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private Assignment assignment;
+
+    SubmissionId() {}
 
     public SubmissionId(@NonNull Student student, @NonNull Assignment assignment) {
         this.student = student;
@@ -29,11 +29,11 @@ public class SubmissionId {
     }
 
     public Student getStudent() {
-        return student;
+        return this.student;
     }
 
     public Assignment getAssignment() {
-        return assignment;
+        return this.assignment;
     }
 
     @Override

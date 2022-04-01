@@ -2,16 +2,21 @@ package com.github.stackscrubs.stuq.backend.model.jpa;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "`user`")
 public class User {
     private static final Pbkdf2PasswordEncoder PASSWORD_ENCODER = new Pbkdf2PasswordEncoder(
         System.getenv("PASSWORD_SECRET"),
@@ -21,34 +26,41 @@ public class User {
     );
 
     @Id
-    @NonNull
+    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @NonNull
+    @Column(nullable = false)
     private String firstName;
     
     @NonNull
+    @Column(nullable = false)
     private String lastName;
 
+    @Column
     private String email;
 
+    @Column
     private String phone;
 
-    @NonNull
+    @Column(nullable = false)
     private String passwordHash;
 
-    protected User(@NonNull int id,
-                @NonNull String firstName,
-                @NonNull String lastName,
-                String email,
-                String phone,
-                @NonNull String passwordHash)
-    {
-        this.id = id;
+    User() {}
+
+    protected User( 
+        @NonNull String firstName,
+        @NonNull String lastName,
+        String email,
+        String phone,
+        @NonNull String passwordHash
+    ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
+        this.passwordHash = passwordHash;
     }
 
     public int getId() {
@@ -58,19 +70,35 @@ public class User {
     public String getFirstName() {
         return this.firstName;
     }
+    
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
     public String getLastName() {
         return this.lastName;
     }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
     
     public String getEmail() {
         return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
     
     public String getPhone() {
         return this.phone;
     } 
     
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getPasswordHash() {
         return this.passwordHash;
     }
@@ -81,12 +109,14 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id,
-                            this.firstName,
-                            this.lastName,
-                            this.email,
-                            this.phone,
-                            this.passwordHash);
+        return Objects.hash(
+            this.id,
+            this.firstName,
+            this.lastName,
+            this.email,
+            this.phone,
+            this.passwordHash
+        );
     }
 
     @Override

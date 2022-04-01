@@ -49,6 +49,10 @@ public class Session {
         return token;
     }
 
+    public byte[] getToken() {
+        return this.token.clone();
+    }
+
     public boolean isExpired() {
         Instant now = Instant.now();
         return (
