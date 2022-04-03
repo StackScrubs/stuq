@@ -1,10 +1,6 @@
 package com.github.stackscrubs.stuq.backend.controller;
 
 import com.github.stackscrubs.stuq.backend.model.jpa.Session;
-import com.github.stackscrubs.stuq.backend.model.jpa.Student;
-import com.github.stackscrubs.stuq.backend.model.jpa.Teacher;
-import com.github.stackscrubs.stuq.backend.model.jpa.TeachingAssistant;
-import com.github.stackscrubs.stuq.backend.repository.UserRepository;
 
 import java.util.Base64;
 
@@ -40,7 +36,6 @@ public class SessionController {
 
     @DeleteMapping(value = "{token}")
     public void delete(@PathVariable String token) {
-        
         this.service.delete(Base64.getDecoder().decode(token));
     }
 }
