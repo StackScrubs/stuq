@@ -2,9 +2,7 @@ name: CD
 
 on:
   push:
-  #  CD is not useful as this point in development, however this file is included to be part of the evaluation
-  #  branches: [ master ]
-  workflow_dispatch:
+    branches: [ master ]
 
 jobs:
   deploy-backend-to-docker:
@@ -64,7 +62,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.event.push.head.sha }}
-          release_name: Current release
+          release_name: Release ${{ github.run_number }}
           body_path: ./CHANGELOG.md
           draft: false
           prerelease: false
