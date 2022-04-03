@@ -1,6 +1,7 @@
 <template>
-<div class="base-input-container">
+<div class="radio-container">
     <input
+        class="radio-interactable"
         type="radio"
         :name="name"
         :checked="modelValue === value"
@@ -8,7 +9,7 @@
         v-bind="$attrs"
         @change="$emit('update:modelValue', value)"
     />
-    <label v-if="label">{{ label }}</label>
+    <label class="radio-label" v-if="label">{{ label }}</label>
 </div>
   
 </template>
@@ -37,11 +38,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.base-input-container {
-    display: flex;
-    flex-direction: row;
-}
-
 input {
     margin: 0px;
     vertical-align: middle;

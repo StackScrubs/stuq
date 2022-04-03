@@ -1,11 +1,11 @@
 <template>
-  <label :for="uid" v-if="label">{{ label }}</label>
+  <label class="select-label" :for="uid" v-if="label">{{ label }}</label>
   <select
     v-bind="$attrs"
     :id="uid"
     :value="modelValue"
     @change="$emit('update:modelValue', $event.target.value)"
-    class="field"
+    class="select-interactable"
   >
     <option
       v-for="option in options"
@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { uid } from "@/uid";
+import { uid } from "@/utils/uid";
 
 export default {
     props: {

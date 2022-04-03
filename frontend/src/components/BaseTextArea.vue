@@ -4,7 +4,7 @@
     v-bind="$attrs"
     :placeholder="label"
     @input="$emit('update:modelValue', $event.target.value)"
-    class="text-field"
+    class="text-area-interactable"
     :aria-describedby="error ? `${uid}-error` : null"
     :aria-invalid="error ? true : null"
   ></textarea>
@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { uid } from "@/uid";
+import { uid } from "@/utils/uid";
 
 export default {
     props: {

@@ -5,11 +5,11 @@
     type="checkbox"
     :id="uid"
     @change="$emit('update:modelValue', $event.target.checked)"
-    class="field"
+    class="checkbox-interactable"
     :aria-describedby="error ? `${uid}-error` : null"
     :aria-invalid="error ? true : null"
   />
-  <label :for="uid" v-if="label">
+  <label class="checkbox-label" :for="uid" v-if="label">
     {{ label }}
   </label>
   <p
@@ -23,7 +23,7 @@
 </template>
 
 <script langs="ts">
-import { uid } from "@/uid";
+import { uid } from "@/utils/uid";
 
 export default {
     props: {
