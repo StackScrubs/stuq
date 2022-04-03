@@ -38,7 +38,7 @@ public class QueueService {
     public synchronized Queue getBySubject(TermId termId, String subjectCode) {
         logger.debug("Finding queue");
 
-        return this.findQueueOrThrow(termId, subjectCode);
+        return this.findQueueOrThrow(termId, subjectCode).clone();
     }
 
     public synchronized void addStudentToQueue(TermId termId, String subjectCode, int studentId) {
