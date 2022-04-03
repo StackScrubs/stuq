@@ -4,7 +4,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Collection;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -13,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.springframework.lang.NonNull;
 
@@ -63,6 +64,7 @@ public class Session {
         return this.token.clone();
     }
 
+    @JsonIgnore
     public boolean isExpired() {
         Instant now = Instant.now();
         return (
@@ -71,12 +73,13 @@ public class Session {
         );
     }
 
-    private void throwIfExpired() {
-        if (this.isExpired()) throw new IllegalStateException("the session is expired");
-    }
-
+    @JsonIgnore
     public User getUser() {
         this.throwIfExpired();
         return this.user;
+    }
+
+    private void throwIfExpired() {
+        if (this.isExpired()) throw new IllegalStateException("the session is expired");
     }
 }

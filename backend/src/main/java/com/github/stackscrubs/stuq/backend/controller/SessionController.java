@@ -1,6 +1,12 @@
 package com.github.stackscrubs.stuq.backend.controller;
 
 import com.github.stackscrubs.stuq.backend.model.jpa.Session;
+import com.github.stackscrubs.stuq.backend.model.jpa.Student;
+import com.github.stackscrubs.stuq.backend.model.jpa.Teacher;
+import com.github.stackscrubs.stuq.backend.model.jpa.TeachingAssistant;
+import com.github.stackscrubs.stuq.backend.repository.UserRepository;
+
+import java.util.Base64;
 
 import com.github.stackscrubs.stuq.backend.model.UserCredentials;
 import com.github.stackscrubs.stuq.backend.service.SessionService;
@@ -27,13 +33,30 @@ public class SessionController {
     @Autowired
     private SessionService service;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Session create(@RequestBody UserCredentials credentials) {
+        try {
+            if (userRepository.findByEmail("teacher@example.com").isEmpty()) {
+                userRepository.save(new Teacher("a", "a", "teacher@example.com", "543267", "pass"));
+            }
+            if (userRepository.findByEmail("teaching-assistant@example.com").isEmpty()) {
+                userRepository.save(new TeachingAssistant("b", "b", "teaching-assistant@example.com", "543267", "pass"));
+            }
+            if (userRepository.findByEmail("student@example.com").isEmpty()) {
+                userRepository.save(new Student("c", "c", "student@example.com", "543267", "pass"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return this.service.create(credentials);
     }
 
-    @DeleteMapping(value = "{token}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void delete(@PathVariable byte[] token) {
-        this.service.delete(token);
+    @DeleteMapping(value = "{token}")
+    public void delete(@PathVariable String token) {
+        
+        this.service.delete(Base64.getDecoder().decode(token));
     }
 }
