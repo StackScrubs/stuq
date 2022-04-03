@@ -33,4 +33,26 @@ public class Queue {
             throw new StudentNotFoundInQueueException();
         }
     }
+
+    @Override
+    public int hashCode() {
+        return this.subject.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Queue other = (Queue) obj;
+        if (this.subject == null) {
+            if (other.subject != null)
+                return false;
+        } else if (!this.subject.equals(other.subject))
+            return false;
+        return true;
+    }
 }
