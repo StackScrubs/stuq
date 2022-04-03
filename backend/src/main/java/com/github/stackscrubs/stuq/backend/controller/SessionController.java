@@ -38,19 +38,6 @@ public class SessionController {
 
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Session create(@RequestBody UserCredentials credentials) {
-        try {
-            if (userRepository.findByEmail("teacher@example.com").isEmpty()) {
-                userRepository.save(new Teacher("a", "a", "teacher@example.com", "543267", "pass"));
-            }
-            if (userRepository.findByEmail("teaching-assistant@example.com").isEmpty()) {
-                userRepository.save(new TeachingAssistant("b", "b", "teaching-assistant@example.com", "543267", "pass"));
-            }
-            if (userRepository.findByEmail("student@example.com").isEmpty()) {
-                userRepository.save(new Student("c", "c", "student@example.com", "543267", "pass"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return this.service.create(credentials);
     }
 
