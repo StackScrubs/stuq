@@ -3,11 +3,14 @@ package com.github.stackscrubs.stuq.backend.controller;
 import java.util.List;
 
 import com.github.stackscrubs.stuq.backend.model.CreateSubjectRequest;
+import com.github.stackscrubs.stuq.backend.model.Queue;
 import com.github.stackscrubs.stuq.backend.model.jpa.Assignment;
 import com.github.stackscrubs.stuq.backend.model.jpa.Subject;
+import com.github.stackscrubs.stuq.backend.model.jpa.SubjectId;
 import com.github.stackscrubs.stuq.backend.model.jpa.Teacher;
 import com.github.stackscrubs.stuq.backend.model.jpa.TeachingAssistant;
 import com.github.stackscrubs.stuq.backend.model.jpa.TermId;
+import com.github.stackscrubs.stuq.backend.service.QueueService;
 import com.github.stackscrubs.stuq.backend.service.SubjectService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +34,12 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableAutoConfiguration
 @CrossOrigin(origins = "") //TODO:
 public class SubjectController {
+
     @Autowired
     private SubjectService subjectService;
+
+    @Autowired
+    private QueueService queueService;
 
     @GetMapping(value = "/{termYear}/{termPeriod}/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Subject getById(
@@ -41,6 +48,11 @@ public class SubjectController {
         @PathVariable String code
     ) {
         return this.subjectService.getSubject(new TermId(termYear, termPeriod), code);
+    }
+
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Subject> getAll() {
+        return this.subjectService.getSubjects();
     }
 
     @GetMapping(value = "/{termYear}/{termPeriod}/{code}/teaching-assistants", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -68,6 +80,15 @@ public class SubjectController {
         @PathVariable String code
     ) {
         return this.subjectService.getAssignments(new TermId(termYear, termPeriod), code);
+    }
+
+    @GetMapping(value = "/{termYear}/{termPeriod}/{code}/queue", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Queue getQueue(
+        @PathVariable int termYear,
+        @PathVariable String termPeriod,
+        @PathVariable String code
+    ) {
+        return this.queueService.getBySubject(new TermId(termYear, termPeriod), code);
     }
     
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)

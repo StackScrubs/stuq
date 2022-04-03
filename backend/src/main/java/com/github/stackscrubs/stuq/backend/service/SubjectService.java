@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SubjectService {
+    
     @Autowired
     private SubjectRepository subjectRepository;
 
@@ -47,6 +48,14 @@ public class SubjectService {
         Term term = this.getTermOrThrow(termId);
 
         return this.getSubjectOrThrow(new SubjectId(subjectCode, term));
+    }
+
+    /**
+     * Gets all stored subjects.
+     * @return A list of all stored subjects.
+     */
+    public List<Subject> getSubjects() {
+        return this.subjectRepository.findAll();
     }
     
     /**
