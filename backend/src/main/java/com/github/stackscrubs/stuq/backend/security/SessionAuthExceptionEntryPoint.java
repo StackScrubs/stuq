@@ -12,9 +12,12 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
+/**
+ * Handles exception that occurr while authenticating the user.
+ */
 @Component
-public class SessionAuthEntryPoint implements AuthenticationEntryPoint {
-    Logger logger = LoggerFactory.getLogger(SessionAuthEntryPoint.class);
+public class SessionAuthExceptionEntryPoint implements AuthenticationEntryPoint {
+    Logger logger = LoggerFactory.getLogger(SessionAuthExceptionEntryPoint.class);
 
     @Override
     public void commence(
