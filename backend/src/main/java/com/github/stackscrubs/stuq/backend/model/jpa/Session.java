@@ -5,6 +5,7 @@ import java.security.SecureRandom;
 import java.sql.Date;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.Objects;
 
 import javax.persistence.Column;
