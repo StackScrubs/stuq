@@ -18,7 +18,7 @@ const state: AuthenticationState = {
     session: null,
 };
 
-const namespaced = true;
+const namespaced = false;
 
 const actions: ActionTree<AuthenticationState, RootState> = {
     async login(
