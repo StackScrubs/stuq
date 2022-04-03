@@ -1,11 +1,12 @@
 package com.github.stackscrubs.stuq.backend.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.github.stackscrubs.stuq.backend.model.Queue;
 import com.github.stackscrubs.stuq.backend.model.QueueAlreadyExistsException;
 import com.github.stackscrubs.stuq.backend.model.QueueNotFoundException;
+import com.github.stackscrubs.stuq.backend.model.QueueStudent;
+import com.github.stackscrubs.stuq.backend.model.jpa.Student;
 import com.github.stackscrubs.stuq.backend.model.jpa.Subject;
 import com.github.stackscrubs.stuq.backend.model.jpa.SubjectId;
 import com.github.stackscrubs.stuq.backend.model.jpa.Term;
@@ -33,22 +34,18 @@ public class QueueService {
     public synchronized Queue getBySubject(TermId termId, String subjectCode) {
         logger.debug("Finding queue");
 
-        return this.activeQueues.stream()
-                .filter((queue) -> 
-                    queue
-                        .getSubject()
-                        .getId()
-                        .equals(new SubjectId(subjectCode, new Term(termId)))
-                )
-                .findAny()
-                .orElseThrow(() -> {
-                    logger.info("Unable to find queue for subject with term year="
-                                + termId.getYear() + ", term period="
-                                + termId.getPeriod() + " and code="
-                                + subjectCode);
+        return this.findQueueOrThrow(termId, subjectCode);
+    }
 
-                    return new QueueNotFoundException();
-                });
+    public synchronized void addStudentToQueue(TermId termId, String subjectCode, int studentId) {
+        Queue queue = this.findQueueOrThrow(termId, subjectCode);
+        Student student = 
+
+        queue.addStudent(new QueueStudent(student));
+    }
+
+    public synchronized void removeStudentFromQueue(int studentId) {
+        if ()
     }
 
     public synchronized void createBySubject(TermId termId, String subjectCode) {
@@ -86,5 +83,24 @@ public class QueueService {
         }
 
         logger.debug("Deleted queue");
+    }
+
+    private synchronized Queue findQueueOrThrow(TermId termId, String subjectCode) {
+        return this.activeQueues.stream()
+            .filter((queue) ->
+                queue
+                    .getSubject()
+                    .getId()
+                    .equals(new SubjectId(subjectCode, new Term(termId)))
+            )
+            .findAny()
+            .orElseThrow(() -> {
+                logger.info("Unable to find queue for subject with term year="
+                            + termId.getYear() + ", term period="
+                            + termId.getPeriod() + " and code="
+                            + subjectCode);
+
+                return new QueueNotFoundException();
+            });
     }
 }
