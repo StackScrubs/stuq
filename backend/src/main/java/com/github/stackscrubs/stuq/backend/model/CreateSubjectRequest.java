@@ -38,22 +38,22 @@ public class CreateSubjectRequest {
         this.name = Objects.requireNonNull(name, "name cannot be null");
     }
 
-    @JsonProperty("code")
+    @JsonProperty
     public String getCode() {
         return code;
     }
 
-    @JsonProperty("term_year")
+    @JsonProperty
     public int getTermYear() {
         return termYear;
     }
     
-    @JsonProperty("term_period")
+    @JsonProperty
     public String getTermPeriod() {
         return termPeriod;
     }
     
-    @JsonProperty("name")
+    @JsonProperty
     public String getName() {
         return name;
     }
