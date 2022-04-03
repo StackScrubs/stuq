@@ -32,13 +32,13 @@ public class UserRepositoryTest {
     @Test
     public void save_saveNewUser_DoesNotThrow() {
         User user = (User) new Student("John", "Doe", "em@ail.com", "98989898", "_");
-        User userSaved = this.userRepository.save(user);
+        this.userRepository.save(user);
     }
 
     @Test
     public void getById_getExistingUser_doesNotThrow() {
         int userId = this.userRepository.save((User) new Student("test", "test", "test@example.com", null, "-")).getId();
-        User user = this.userRepository.getById(userId);
+        this.userRepository.getById(userId);
     }
 
     @Test

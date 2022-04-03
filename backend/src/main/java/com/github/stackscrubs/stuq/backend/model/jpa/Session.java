@@ -2,7 +2,6 @@ package com.github.stackscrubs.stuq.backend.model.jpa;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.sql.Date;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
@@ -27,6 +26,7 @@ public class Session {
     public static final int TOKEN_SIZE = 32;
 
     @Id
+    @Column(columnDefinition = "BINARY(" + TOKEN_SIZE + ")")
     private byte[] token;
 
     @ManyToOne(fetch = FetchType.EAGER)
