@@ -27,7 +27,7 @@ public class QueueService {
     @Autowired
     private StudentService studentService;
 
-    private List<Queue> activeQueues;
+    private List<Queue> activeQueues = new ArrayList<>();
 
     Logger logger = LoggerFactory.getLogger(QueueService.class);
 
