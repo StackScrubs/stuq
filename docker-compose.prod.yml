@@ -1,0 +1,36 @@
+version: '3.1'
+
+services:
+  # In an actual production environment, DB would not be found here.
+  # This is included here for the evaluation of the submission.
+  db:
+    image: mysql:5.7-oracle
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: stuq_db
+      MYSQL_USER: stuq_be
+      MYSQL_PASSWORD: db_user_pass
+      MYSQL_ROOT_PASSWORD: db_root_pass
+
+  backend:
+    image: stackscrubs/stuq-backend:latest
+    restart: always
+    ports:
+      - 8085:8080
+    environment:
+      DB_URL: jdbc:mysql://db:3306/stuq_db
+      DB_USERNAME: stuq_be
+      DB_PASSWORD: db_user_pass
+    depends_on:
+      - db
+
+  frontend:
+    image: stackscrubs/stuq-frontend:latest
+    volumes:
+      - ./frontend:/app
+    restart: always
+    ports:
+      - 8080:8080
