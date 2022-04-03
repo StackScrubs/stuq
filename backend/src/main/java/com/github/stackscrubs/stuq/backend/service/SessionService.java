@@ -1,6 +1,9 @@
 package com.github.stackscrubs.stuq.backend.service;
 
 import com.github.stackscrubs.stuq.backend.model.UserCredentials;
+
+import java.util.Optional;
+
 import com.github.stackscrubs.stuq.backend.model.InvalidCredentialsException;
 import com.github.stackscrubs.stuq.backend.model.SessionNotFoundException;
 import com.github.stackscrubs.stuq.backend.model.jpa.Session;
@@ -47,6 +50,20 @@ public class SessionService {
 
         logger.debug("Session created for " + credentials.getEmail());
 
+        return session;
+    }
+
+    /**
+     * Finds a session by token.
+     * @param token The token of the session to find.
+     */
+    public Optional<Session> find(byte[] token) {
+        logger.debug("Finding session");
+        
+        Optional<Session> session = sessionRepository.findById(token);
+
+        logger.debug(session.isPresent() ? "Session found" : "Session not found");
+        
         return session;
     }
 
