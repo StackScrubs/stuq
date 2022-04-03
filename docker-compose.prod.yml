@@ -16,7 +16,7 @@ services:
       MYSQL_ROOT_PASSWORD: db_root_pass
 
   backend:
-    image: stuq/backend:latest
+    image: stackscrubs/stuq-backend:latest
     restart: always
     ports:
       - 8085:8080
@@ -28,7 +28,7 @@ services:
       - db
 
   frontend:
-    image: stuq/frontend:latest
+    image: stackscrubs/stuq-frontend:latest
     volumes:
       - ./frontend:/app
     restart: always
