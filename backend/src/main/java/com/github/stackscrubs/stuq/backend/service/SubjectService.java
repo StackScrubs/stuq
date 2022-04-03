@@ -218,16 +218,16 @@ public class SubjectService {
      */
     private Subject getSubjectOrThrow(SubjectId subjectId) {
         return this.subjectRepository.findById(subjectId)
-        .orElseThrow(() -> {
-                TermId termId = subjectId.getTerm().getId();
-                logger.info(
-                    "Failed to find subject with term year="
-                    + termId.getYear() + ", term period="
-                    + termId.getPeriod() + "and code="
-                    + subjectId.getCode()
-                );
-                return new SubjectNotFoundException();
-            }
-        );
+            .orElseThrow(() -> {
+                    TermId termId = subjectId.getTerm().getId();
+                    logger.info(
+                        "Failed to find subject with term year="
+                        + termId.getYear() + ", term period="
+                        + termId.getPeriod() + "and code="
+                        + subjectId.getCode()
+                    );
+                    return new SubjectNotFoundException();
+                }
+            );
     }
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import com.github.stackscrubs.stuq.backend.model.jpa.Student;
 import com.github.stackscrubs.stuq.backend.model.jpa.Subject;
 
 public class Queue {
@@ -32,6 +33,10 @@ public class Queue {
         if (!this.queuedStudents.remove(student)) {
             throw new StudentNotFoundInQueueException();
         }
+    }
+
+    public boolean contains(Student student) {
+        return this.queuedStudents.stream().filter((s) -> s.getStudent().equals(student)).count() > 0;
     }
 
     @Override

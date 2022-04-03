@@ -6,6 +6,7 @@ import com.github.stackscrubs.stuq.backend.model.Queue;
 import com.github.stackscrubs.stuq.backend.model.QueueAlreadyExistsException;
 import com.github.stackscrubs.stuq.backend.model.QueueNotFoundException;
 import com.github.stackscrubs.stuq.backend.model.QueueStudent;
+import com.github.stackscrubs.stuq.backend.model.StudentNotFoundInQueueException;
 import com.github.stackscrubs.stuq.backend.model.jpa.Student;
 import com.github.stackscrubs.stuq.backend.model.jpa.Subject;
 import com.github.stackscrubs.stuq.backend.model.jpa.SubjectId;
@@ -23,6 +24,9 @@ public class QueueService {
     @Autowired
     private SubjectService subjectService;
 
+    @Autowired
+    private StudentService studentService;
+
     private List<Queue> activeQueues;
 
     Logger logger = LoggerFactory.getLogger(QueueService.class);
@@ -39,13 +43,23 @@ public class QueueService {
 
     public synchronized void addStudentToQueue(TermId termId, String subjectCode, int studentId) {
         Queue queue = this.findQueueOrThrow(termId, subjectCode);
-        Student student = 
+        Student student = this.studentService.getStudent(studentId);
 
         queue.addStudent(new QueueStudent(student));
     }
 
     public synchronized void removeStudentFromQueue(int studentId) {
-        if ()
+        Student student = this.studentService.getStudent(studentId);
+
+        Queue queue = this.activeQueues.stream()
+                        .filter((q) -> q.contains(student))
+                        .findAny()
+                        .orElseThrow(() -> {
+                            logger.info("Unable to find student in queue");
+                            return new StudentNotFoundInQueueException();
+                        });
+
+        queue.removeStudent(new QueueStudent(student));
     }
 
     public synchronized void createBySubject(TermId termId, String subjectCode) {
