@@ -32,10 +32,7 @@ import org.springframework.http.MediaType;
 public class SessionController {
     @Autowired
     private SessionService service;
-
-    @Autowired
-    private UserRepository userRepository;
-
+    
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Session create(@RequestBody UserCredentials credentials) {
         return this.service.create(credentials);
