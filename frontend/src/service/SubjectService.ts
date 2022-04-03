@@ -6,7 +6,7 @@ import { Teacher, TeachingAssistant } from "@/types/User";
 import axios, { AxiosResponse } from "axios";
 
 const CONFIG = {
-    baseURL: process.env.VUE_APP_DEV_API_ENDPOINT + "/session",
+    baseURL: process.env.VUE_APP_DEV_API_ENDPOINT,
     withCredentials: false,
     headers: {
         "Accept": "application/json",
@@ -37,7 +37,7 @@ function subjectRequest<TData, TReturn>(handler: (url: string, data: TData) => P
 
 export async function createSubject(data: CreateSubjectRequest) {
     try {
-        await axios.post("/subject/", data, CONFIG).catch(e => { throw translateError(e) });
+        await axios.post("/subject", data, CONFIG).catch(e => { throw translateError(e) });
     } catch (e) {
         throw translateError(e);
     }
@@ -50,7 +50,7 @@ export const getSubjectTeachers = subjectRequest<void, Teacher[]>((url) => axios
 export const getSubjectAssignments = subjectRequest<void, Assignment[]>((url) => axios.get(url + "/assignments", CONFIG));
 export async function getAllSubjects() {
     try {
-        const response: AxiosResponse<Subject[], unknown> = await axios.get("/subject/", CONFIG);
+        const response: AxiosResponse<Subject[], unknown> = await axios.get("/subject", CONFIG);
         return response.data;
     } catch (e) {
         throw translateError(e);
