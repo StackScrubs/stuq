@@ -25,6 +25,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+/**
+ * Filters requests to add authentication and authorization if present.
+ */
 @Component
 public class SessionAuthRequestFilter extends OncePerRequestFilter {
     @Autowired
@@ -33,7 +36,7 @@ public class SessionAuthRequestFilter extends OncePerRequestFilter {
     @Autowired
     private UserService userService;
 
-    Logger logger = LoggerFactory.getLogger(SessionAuthEntryPoint.class);
+    Logger logger = LoggerFactory.getLogger(SessionAuthExceptionEntryPoint.class);
 
     @Override
     protected void doFilterInternal(
@@ -45,6 +48,7 @@ public class SessionAuthRequestFilter extends OncePerRequestFilter {
             logger.trace("No valid user session found.");
             return null;
         });
+
         if (session != null) {
             List<UserRole> roles = userService.getUserRoles(session.getUser());
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

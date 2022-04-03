@@ -11,6 +11,9 @@ import com.github.stackscrubs.stuq.backend.repository.TeachingAssistantRepositor
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * UserService handles user functionality.
+ */
 @Service
 public class UserService {
     @Autowired
@@ -22,6 +25,11 @@ public class UserService {
     @Autowired
     private StudentRepository studentRepository;
 
+    /**
+     * Gets all user roles that a user posesses.
+     * @param user The user's roles to get.
+     * @return List of roles that the user posesses.
+     */
     public ArrayList<UserRole> getUserRoles(User user) {
         ArrayList<UserRole> roles = new ArrayList<>();
         if (teacherRepository.existsById(user.getId())) {

@@ -8,16 +8,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 @EnableWebSecurity
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)  
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private SessionAuthEntryPoint sessionAuthEntryPoint;
+    private SessionAuthExceptionEntryPoint sessionAuthExceptionEntryPoint;
 
     @Autowired
     private SessionAuthRequestFilter sessionAuthRequestFilter;
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests().antMatchers("/session/**").permitAll()
         // Require auth for all other urls.
             .anyRequest().authenticated().and()
-            .exceptionHandling().authenticationEntryPoint(sessionAuthEntryPoint).and()
+            .exceptionHandling().authenticationEntryPoint(sessionAuthExceptionEntryPoint).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
 
         http.addFilterBefore(sessionAuthRequestFilter, UsernamePasswordAuthenticationFilter.class);

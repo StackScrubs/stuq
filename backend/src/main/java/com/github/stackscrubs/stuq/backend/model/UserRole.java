@@ -2,6 +2,9 @@ package com.github.stackscrubs.stuq.backend.model;
 
 import org.springframework.security.core.GrantedAuthority;
 
+/**
+ * Represents a role that a user can posess.
+ */
 public enum UserRole implements GrantedAuthority {
     TEACHER("TEACHER"),
     TEACHING_ASSISTANT("TEACHING_ASSISTANT"),
