@@ -74,6 +74,6 @@ public class SessionAuthRequestFilter extends OncePerRequestFilter {
         }
         String base64SessionToken = authorizationHeader.substring(authPrefix.length());
         byte[] sessionToken = Base64.getDecoder().decode(base64SessionToken);
-        return sessionService.find(sessionToken).filter(x -> !x.isExpired());
+        return sessionService.findAndRefresh(sessionToken).filter(x -> !x.isExpired());
     }
 }

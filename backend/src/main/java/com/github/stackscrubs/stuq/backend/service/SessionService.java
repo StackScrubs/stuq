@@ -4,6 +4,8 @@ import com.github.stackscrubs.stuq.backend.model.UserCredentials;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.github.stackscrubs.stuq.backend.model.InvalidCredentialsException;
 import com.github.stackscrubs.stuq.backend.model.SessionNotFoundException;
 import com.github.stackscrubs.stuq.backend.model.jpa.Session;
@@ -14,6 +16,7 @@ import com.github.stackscrubs.stuq.backend.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 /**
@@ -54,13 +57,15 @@ public class SessionService {
     }
 
     /**
-     * Finds a session by token.
+     * Finds and refreshes a session by token.
      * @param token The token of the session to find.
      */
-    public Optional<Session> find(byte[] token) {
+    @Transactional
+    public Optional<Session> findAndRefresh(byte[] token) {
         logger.debug("Finding session");
         
         Optional<Session> session = sessionRepository.findById(token);
+        session.ifPresent(Session::refresh);
 
         logger.debug(session.isPresent() ? "Session found" : "Session not found");
         
@@ -84,5 +89,11 @@ public class SessionService {
         sessionRepository.delete(session);
 
         logger.debug("Session deleted");
+    }
+    
+    @Scheduled(fixedDelay = 1000  * 60 * 5) // every 5 minutes
+    public void purgeExpired() {
+        logger.debug("Cleaning up expired sessions");
+        sessionRepository.deleteAllExpired();
     }
 }
