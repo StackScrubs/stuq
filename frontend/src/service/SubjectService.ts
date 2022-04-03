@@ -44,7 +44,7 @@ export async function createSubject(data: CreateSubjectRequest) {
 }
 export const updateSubject = subjectRequest<CreateSubjectRequest, void>((url, data) => axios.put(url, data, CONFIG));
 export const getSubject = subjectRequest<void, void>(url => axios.get(url, CONFIG));
-export const deleteSubject = subjectRequest<void, void>((url) => axios.delete(url));
+export const deleteSubject = subjectRequest<void, void>((url) => axios.delete(url, CONFIG));
 export const getSubjectTeachingAssistants = subjectRequest<void, TeachingAssistant[]>((url) => axios.get(url + "/teaching-assistants", CONFIG));
 export const getSubjectTeachers = subjectRequest<void, Teacher[]>((url) => axios.get(url + "/teachers", CONFIG));
 export const getSubjectAssignments = subjectRequest<void, Assignment[]>((url) => axios.get(url + "/assignments", CONFIG));
