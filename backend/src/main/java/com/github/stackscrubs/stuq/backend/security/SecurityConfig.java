@@ -13,6 +13,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)  
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private final static String[] SWAGGER_WHITELIST = {
+        "/swagger-resources/**",
+        "/swagger-ui/**",
+        "/v2/api-docs",
+        "/webjars/**"
+    };
+
     @Autowired
     private SessionAuthExceptionEntryPoint sessionAuthExceptionEntryPoint;
 
@@ -22,9 +29,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // Disable CSRF, as it is not needed for STUQ
-        http.csrf().disable()
-        // Allow all requests to /session
-            .authorizeRequests().antMatchers("/session/**").permitAll()
+        http.csrf().disable().authorizeRequests()
+        // Allow all requests to /session and swagger-related resources 
+            .antMatchers("/session/**").permitAll()
+            .antMatchers(SWAGGER_WHITELIST).permitAll()
         // Require auth for all other urls.
             .anyRequest().authenticated().and()
             .exceptionHandling().authenticationEntryPoint(sessionAuthExceptionEntryPoint).and()
