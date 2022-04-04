@@ -13,8 +13,8 @@ const CONFIG = {
 
 export async function createSession(userCredentials: UserCredentials): Promise<Session> {
     try {
-        const response: AxiosResponse<{ token: string }, unknown> = await axios.post("", userCredentials, CONFIG);
-        return new Session(response.data.token);
+        const response: AxiosResponse<{ token: string, studentId: number }, unknown> = await axios.post("", userCredentials, CONFIG);
+        return new Session(response.data.token, response.data.studentId);
     } catch (e) {
         if (axios.isAxiosError(e)) {
             if (e.response && e.response.status == 401) {

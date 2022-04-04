@@ -53,26 +53,25 @@ export default defineComponent({
         ]),
         async onSubmit() {
             await this.submit().then(async (userCredentials) => {
-                if (userCredentials === undefined || !(userCredentials.email && userCredentials.password)) {
-                    return
-                }
-                const email = userCredentials.email;
-                const password = userCredentials.password;
-                try {
-                    await store.dispatch("login", { email, password });
+                if (userCredentials !== undefined) {
+                    const email = userCredentials.email;
+                    const password = userCredentials.password;
+                    try {
+                        await store.dispatch("login", { email, password });
                     //TODO: If OK => Route to home/queues-page (not created yet)
-                } catch (e) {
-                    if (e instanceof InvalidCredentialsError) {
-                        this.failedLoginMessage = "Ugyldig brukernavn eller passord";
-                    }
+                    } catch (e) {
+                        if (e instanceof InvalidCredentialsError) {
+                            this.failedLoginMessage = "Ugyldig brukernavn eller passord";
+                        }
+                    }                
                 }
             })
         },
     },
     setup() {
         const validationSchema = object({
-            email: string().email("invalid email").required("email is required"),
-            password: string().required("password is required")
+            email: string().email("ugyldig epost adresse").required("epost adresse er påkrevd"),
+            password: string().required("passord er påkrevd")
         });
 
         const { handleSubmit, errors } = useForm({
