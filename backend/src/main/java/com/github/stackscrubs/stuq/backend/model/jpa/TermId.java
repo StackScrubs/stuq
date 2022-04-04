@@ -32,8 +32,11 @@ public class TermId implements Serializable {
      * @param period The period in which this term takes place.
      */
     public TermId(@NonNull int year, @NonNull String period) {
+        if (year < 0)
+            throw new IllegalArgumentException("year cannot be negative");
+            
         this.year = year;
-        this.period = period;
+        this.period = Objects.requireNonNull(period, "period cannot be null");
     }
 
     /**
