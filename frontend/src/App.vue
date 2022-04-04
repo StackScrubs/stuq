@@ -1,7 +1,7 @@
 <template>
   <nav>
     <router-link to="/login">Login</router-link> | 
-    <router-link to="/queuing">test-queuing</router-link>
+    <router-link to="/queuing">Queuing</router-link>
   </nav>
   <router-view />
 </template>

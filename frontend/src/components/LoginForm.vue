@@ -29,6 +29,7 @@ import { InvalidCredentialsError } from "../types/UserCredentials";
 import store from "../store";
 import BaseInput from "./BaseInput.vue";
 import { mapActions } from "vuex";
+import router from "@/router";
 
 export default defineComponent({
     components: { BaseInput },
@@ -50,6 +51,7 @@ export default defineComponent({
                     const password = userCredentials.password;
                     try {
                         await store.dispatch("login", { email, password });
+                        router.push("/queuing")
                     //TODO: If OK => Route to home/queues-page (not created yet)
                     } catch (e) {
                         if (e instanceof InvalidCredentialsError) {
