@@ -6,3 +6,5 @@ export class Subject {
         readonly name: string,
     ) {}
 }
+
+export class SubjectNotFoundError extends Error {}

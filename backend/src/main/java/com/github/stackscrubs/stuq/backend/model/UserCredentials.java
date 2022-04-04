@@ -28,7 +28,10 @@ public class UserCredentials {
      * @param password User's password.
      */
     @JsonCreator
-    public UserCredentials(@NonNull String email, @NonNull String password) {
+    public UserCredentials(
+        @NonNull @JsonProperty("email") String email, 
+        @NonNull @JsonProperty("password") String password
+    ) {
         this.email = Objects.requireNonNull(email, "email cannot be null");
         this.password = Objects.requireNonNull(password, "password cannot be null");
     }

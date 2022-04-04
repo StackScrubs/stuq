@@ -1,4 +1,4 @@
-import { expect } from 'chai';import { flushPromises, shallowMount, VueWrapper } from "@vue/test-utils";
+import { expect } from 'chai';import { shallowMount, VueWrapper } from "@vue/test-utils";
 import LoginForm from "@/components/LoginForm.vue";
 import store from "@/store/index";
 import router from "@/router/index";

@@ -5,7 +5,6 @@
       label="Email"
       v-model="email"
       type="email"
-      class="base-input-field"
       data-testid="email-input"
       :error="errors.email"
     />
@@ -13,7 +12,6 @@
       label="Password"
       v-model="password"
       type="password"
-      class="base-input-field"
       data-testid="password-input"
       :error="errors.password"
     />
@@ -27,49 +25,47 @@ import { defineComponent } from "vue";
 import { useField, useForm } from "vee-validate";
 import { object, string } from "yup"; 
 
-import { UserCredentials, InvalidCredentialsError } from "../types/UserCredentials";
+import { InvalidCredentialsError } from "../types/UserCredentials";
 import store from "../store";
 import BaseInput from "./BaseInput.vue";
+import { mapActions } from "vuex";
+import router from "@/router";
 
 export default defineComponent({
     components: { BaseInput },
     name: "LoginComponent",
-    prop: {
-        failedLoginMessage: "",
-        errors: {
-            email: "",
-            password: ""
-        }
-    },
-    data: (): {credentials: UserCredentials, failedLoginMessage: string } => {
+    data: () => {
         return {
-            credentials: { email: "", password: ""},
             failedLoginMessage: "",
         };
     },
     methods: {
+        ...mapActions("Authentication", [
+            "login", 
+            "logout"
+        ]),
         async onSubmit() {
             await this.submit().then(async (userCredentials) => {
-                if (userCredentials === undefined || !(userCredentials.email && userCredentials.password)) {
-                    return
-                }
-                const email = userCredentials.email;
-                const password = userCredentials.password;
-                try {
-                    await store.dispatch("login", { email, password });
+                if (userCredentials !== undefined) {
+                    const email = userCredentials.email;
+                    const password = userCredentials.password;
+                    try {
+                        await store.dispatch("login", { email, password });
+                        router.push("/queuing")
                     //TODO: If OK => Route to home/queues-page (not created yet)
-                } catch (e) {
-                    if (e instanceof InvalidCredentialsError) {
-                        this.failedLoginMessage = "Ugyldig brukernavn eller passord";
-                    }
+                    } catch (e) {
+                        if (e instanceof InvalidCredentialsError) {
+                            this.failedLoginMessage = "Ugyldig brukernavn eller passord";
+                        }
+                    }                
                 }
             })
         },
     },
     setup() {
         const validationSchema = object({
-            email: string().email("invalid email").required("email is required"),
-            password: string().required("password is required")
+            email: string().email("ugyldig epost adresse").required("epost adresse er påkrevd"),
+            password: string().required("passord er påkrevd")
         });
 
         const { handleSubmit, errors } = useForm({
@@ -124,7 +120,7 @@ export default defineComponent({
   cursor: pointer;
 }
 
-:deep(.base-input-field) {
+:deep(.input-interactable) {
   margin: 10px;
   padding: 10px 5px;
 }
@@ -141,7 +137,7 @@ export default defineComponent({
       max-width: 400px;
     }
 
-    :deep(.base-input-field) {
+    :deep(.input-interactable) {
       width: 400px
     }
 }

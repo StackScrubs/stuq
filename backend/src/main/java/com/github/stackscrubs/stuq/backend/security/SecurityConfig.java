@@ -1,5 +1,9 @@
 package com.github.stackscrubs.stuq.backend.security;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -8,6 +12,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.context.annotation.Bean;
 
 /**
  * Spring configuration class.
@@ -19,35 +27,33 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)  
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final static String[] SWAGGER_WHITELIST = {
-        "/swagger-resources/**",
-        "/swagger-ui/**",
-        "/v2/api-docs",
-        "/webjars/**"
-    };
-
+    
     @Autowired
     private SessionAuthExceptionEntryPoint sessionAuthExceptionEntryPoint;
 
     @Autowired
     private SessionAuthRequestFilter sessionAuthRequestFilter;
 
-    /**
-     * Override of WebSecurityConfigurerAdapter's configure method.
-     * Used to configure the authentication protocols to use.
-     * Also specifies which endpoints do and don't require authentication.
-     */
+    static CorsConfiguration corsConfiguration(HttpServletRequest request) {
+        CorsConfiguration cors = new CorsConfiguration();
+        cors.setAllowedOrigins(List.of("*"));
+        cors.setAllowedMethods(List.of("GET", "POST", "PUT", "OPTIONS"));
+        cors.setAllowedHeaders(List.of("*"));
+        return cors;
+	}
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // Disable CSRF, as it is not needed for STUQ
-        http.csrf().disable().authorizeRequests()
-        // Allow all requests to /session and swagger-related resources 
-            .antMatchers("/session/**").permitAll()
-            .antMatchers(SWAGGER_WHITELIST).permitAll()
+        // Set CORS and disable CSRF, as it is not needed for STUQ
+        http.cors().configurationSource(SecurityConfig::corsConfiguration).and()
+            .csrf().disable()
+        // Allow all requests to /session
+            .authorizeRequests().antMatchers("/session/**").permitAll()
+            .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
         // Require auth for all other urls.
             .anyRequest().authenticated().and()
             .exceptionHandling().authenticationEntryPoint(sessionAuthExceptionEntryPoint).and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
 
         http.addFilterBefore(sessionAuthRequestFilter, UsernamePasswordAuthenticationFilter.class);
    }

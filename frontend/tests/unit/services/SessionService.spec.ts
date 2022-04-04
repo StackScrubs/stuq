@@ -6,7 +6,7 @@ import { createSession, deleteSession } from "@/service/SessionService";
 import { Session } from "@/types/Session";
 import { InvalidCredentialsError } from "@/types/UserCredentials";
 
-type CreateData = {token: string} | undefined;
+type CreateData = {token: string } | undefined;
 type AxiosCreateResponse = AxiosResponse<CreateData, unknown>;
 type AxiosCreateError = AxiosError<CreateData, unknown>;
 
@@ -22,10 +22,10 @@ describe("SessionService.ts", () => {
     });
 
     it("Creates session if logged in successfully", async () => {
-        const expected = "Th1$154T0K3n";
-        
+        const expectedToken = "Th1$154T0K3n";
+
         const response: AxiosCreateResponse = {
-            data: { token: expected },
+            data: { token: expectedToken },
             status: 201,
             statusText: "Created",
             headers: {},
@@ -36,7 +36,7 @@ describe("SessionService.ts", () => {
         const userCredentials = {email: "monke@mail.com", password: "$m3lly6at"}
         const session = await createSession(userCredentials);
 
-        expect(session.token).to.equal(expected)
+        expect(session.token).to.equal(expectedToken)
     });
 
     it("Throws error if usercredentials are invalid", async () => {     

@@ -1,12 +1,12 @@
 <template>
-  <label :for="uid" v-if="label">{{ label }}</label>
+  <label class="input-label" :for="uid" v-if="label">{{ label }}</label>
   <input
     :id="uid"
     v-bind="$attrs"
     :value="modelValue"
     :placeholder="label"
     @input="$emit('update:modelValue', $event.target.value)"
-    class="field"
+    class="input-interactable"
     :aria-describedby="error ? `${uid}-error` : null"
     :aria-invalid="error ? true : null"
   />
@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { uid } from "@/uid";
+import { uid } from "@/utils/uid";
 
 export default {
     props: {
