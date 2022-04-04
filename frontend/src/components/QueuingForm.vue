@@ -1,17 +1,17 @@
 <template>
     <div class="box">
-        <form class="box" @submit.prevent="onSubmit">            
+        <form class="box" @submit.prevent="submit">            
             <label>Øvinger</label>
-            <div class="checkbox-list-options" v-for="(doneAssignment, index) in doneAssignments" :key="index" >
+            <div class="checkbox-list-options" v-for="(doneAssignment, index) in doneAssignments" :key="index"  >
                     <BaseCheckbox :label="doneAssignment.name" v-model="doneMarker" />
             </div>
-            <div class="checkbox-list-options" v-for="(pickableAssignment, index) in pickedAssignments" :key="index" >
+            <div class="checkbox-list-options" v-for="(pickableAssignment, index) in pickableAssignments" :key="index" >
                     <BaseCheckbox :label="pickableAssignment.assignment.name" v-model="pickableAssignment.picked" />
             </div>
 
             <label>Type</label>
-            <div class="radio-list-options" v-for="(type, key) in queuingType" :key="key" >
-                <BaseRadio name="queueform" :label="type.name" v-model="type.value"/>
+            <div class="radio-list-options" v-for="(queueType, key) in queueTypes" :key="key" >
+                <BaseRadio name="queueform" :label="queueType.name" :value="queueType.value" v-model="selectedQueueType" />
             </div>
 
             <label>Melding</label>
@@ -29,91 +29,76 @@ import BaseCheckbox from "@/components/BaseCheckbox.vue"
 import BaseRadio from "@/components/BaseRadio.vue"
 import BaseTextArea from "@/components/BaseTextArea.vue"
 import { Assignment } from "@/types/Assignment"
-import { QueueNotFoundError, QueueType } from "@/types/QueueType"
+import { QueueType } from "@/types/QueueType"
 import { Subject, SubjectNotFoundError } from "@/types/Subject"
 
 import { getQueueTypeAsText } from "@/utils/utils"
-import { enqueue, getAssignments, getSubmissions } from "@/service/QueingService";
-import { object, string, array, number } from "yup";
-import { useField, useForm } from "vee-validate";
+import { enqueue, getSubmissions } from "@/service/SubmissionService";
+import { getSubject, getSubjectAssignments } from "@/service/SubjectService"
 import store from "@/store";
 import { mapGetters } from "vuex";
+import { Submission } from "@/types/Submission";
 
 export default defineComponent({
     name: "QueuingForm",
     components: { BaseCheckbox, BaseRadio, BaseTextArea },
-    props: {
-        subject: {
-            type: Subject,
-        },
-    },
     data: (): {
+        subject: Subject
         failedEnqueueMessage: string
         doneAssignments: Array<Assignment>
         doneMarker: boolean
-        //pickableAssignments: Array<{picked: boolean, assignment: Assignment}>
-        queueTypes: QueueType | undefined
+        pickableAssignments: Array<{picked: boolean, assignment: Assignment}>
+        queueTypes: Array<({ value: QueueType, name: string, modelValue: QueueType})>
+        selectedQueueType: QueueType,
         message: string } => {
         return {
+            subject: new Subject(2021, "V", "IDATT2105", "Full-stack"), //Test data
             failedEnqueueMessage: "",
             doneAssignments: [
                 new Assignment("1", "oblig 1", new Subject(2021, "V", "IDATT2105", "Full-stack")),
                 new Assignment("2", "oblig 2", new Subject(2021, "V", "IDATT2105", "Full-stack"))
             ],
+            pickableAssignments: [
+                {picked: false, assignment: new Assignment("3", "oblig 3", new Subject(2021, "V", "IDATT2105", "Full-stack"))},
+                {picked: false, assignment: new Assignment("4", "oblig 4", new Subject(2021, "V", "IDATT2105", "Full-stack"))}
+            ],
             doneMarker: true,
-            // pickableAssignments: [
-            //     {picked: false, assignment: new Assignment("3", "oblig 3", new Subject(2021, "V", "IDATT2105", "Full-stack"))},
-            //     {picked: false, assignment: new Assignment("4", "oblig 4", new Subject(2021, "V", "IDATT2105", "Full-stack"))}
-            // ],
-            queueTypes: undefined,
-            message: ""
-        }
-    },
-    computed: {
-        queuingType() {
-            return Object.values(QueueType)
+            queueTypes: Object.values(QueueType)
                 .filter(key => typeof key === "number")
-                .map(key => {
-                    if (typeof key !== "string") {
-                        return { value: key, name: getQueueTypeAsText(key)}
-                    }
-                })
+                .map(key => { key = key as number; return { value: key, name: getQueueTypeAsText(key), modelValue: key }}),
+            selectedQueueType: QueueType.Submission,
+            message: ""
         }
     },
     methods: {
         ...mapGetters("Authentication", [
             "session"
         ]),
-        async onsubmit() {
-            //Gather all checked submission choices
-            await this.submit().then(async (submissionData) => {
-                if (submissionData !== undefined) {
-                    if (submissionData.pickedAssignments !== undefined && submissionData.queueType) {
-                        const assignments = submissionData.pickedAssignments.filter(v => v !== undefined)
-                        const queueType = submissionData.queueType
-                        try {
-                            await enqueue(store.getters.session, this.subject, assignments, queueType);
-                        } catch (e) {
-                            if (e instanceof SubjectNotFoundError) {
-                                this.failedEnqueueMessage = "Fant ikke ønsket emne";
-                            }
-                            // if (e instanceof QueueNotFoundError) {
-                            //     this.failedEnqueueMessage = "Fant ikke kø for ønsket emne";
-                            // }
-                        }
+        async submit() {
+            const assignments = this.pickableAssignments.filter(v => v.picked).map(v => v.assignment)
+            const queueType = this.selectedQueueType //find quequetype choice
+            if (assignments.length > 0) {
+                try {
+                    await enqueue(this.subject, assignments, queueType);
+                } catch (e) {
+                    if (e instanceof SubjectNotFoundError) {
+                        this.failedEnqueueMessage = "Fant ikke ønsket emne";
                     }
+                // if (e instanceof QueueNotFoundError) {
+                //     this.failedEnqueueMessage = "Fant ikke kø for ønsket emne";
+                // }
                 }
-            })
+            } else {
+                this.failedEnqueueMessage = "Velg øvinger/obliger samt køtype for å gå videre"
+            }
         }
     },
 
     async mounted() {
         try {
-            const assignments = await getAssignments(this.subject)
-            const submissions = await getSubmissions(this.subject)
-            //If submission have an assignment then mark said assignment as done
-            //Set assignments data
-            if (assignments !== undefined && submissions !== undefined) {
+            const assignments = await getSubjectAssignments(this.subject.termYear, this.subject.termPeriod, this.subject.code)
+            const submissions: Array<Submission> = await getSubmissions()
+            if (assignments !== undefined) {
                 const result = assignments.map((assignment) => {
                     return { available: (submissions.find((submission) => submission.id.assignment.id === assignment.id && submission.isApproved) !== undefined) ? true : false,
                         assignment: assignment
@@ -127,55 +112,14 @@ export default defineComponent({
                         this.doneAssignments.push(pickableAssignment.assignment)
                     }
                 });
-                this.pickedAssignments = temp
-                // const pickedAssigments = assignments?.filter((assignment) => submissions?.find((submission) => submission.id.assignment.id === assignment.id && submission.isApproved) !== undefined).map((assignment) => {
-                //     return { picked: false,
-                //         assignment: assignment
-                //     }
-                // })
-                // this.pickableAssignments = pickedAssigments;
-
+                this.pickableAssignments = temp
             } else {
                 //Handle "undefined" behaviour
+                console.log("Assignments: ", + assignments)
+                console.log("Submissions: ", + submissions)
             }
         } catch (e) {
             //Handle error
-        }
-    },
-    setup() {
-        const validationSchema = object({
-            pickedAssignments: array().test({
-                name: "pickedAssignments_test",
-                exclusive: true,
-                message: "Velg minst en øving/oblig",
-                test: (v) => {
-                    return (v === undefined) ? false : v.length > 0
-                }
-            }),
-            queueType: string().required("queue type is required"),
-        });
-
-        const { handleSubmit, errors } = useForm({
-            validationSchema,
-            initialValues: {
-                pickedAssignments: [],
-                queueType: "",
-            },
-        });
-
-        const { value: pickedAssignments } = useField("pickedAssignments");
-        const { value: queueType } = useField("queueType");
-
-        const submit =  handleSubmit((values) => {
-            return values;
-        });
-
-        return {
-            validationSchema,
-            errors,
-            pickedAssignments,
-            queueType,
-            submit,
         }
     },
 })

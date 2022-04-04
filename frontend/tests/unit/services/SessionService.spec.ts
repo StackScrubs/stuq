@@ -6,7 +6,7 @@ import { createSession, deleteSession } from "@/service/SessionService";
 import { Session } from "@/types/Session";
 import { InvalidCredentialsError } from "@/types/UserCredentials";
 
-type CreateData = {token: string, studentId: number} | undefined;
+type CreateData = {token: string } | undefined;
 type AxiosCreateResponse = AxiosResponse<CreateData, unknown>;
 type AxiosCreateError = AxiosError<CreateData, unknown>;
 
@@ -23,10 +23,9 @@ describe("SessionService.ts", () => {
 
     it("Creates session if logged in successfully", async () => {
         const expectedToken = "Th1$154T0K3n";
-        const expectedStudentId = 267;
 
         const response: AxiosCreateResponse = {
-            data: { token: expectedToken, studentId: expectedStudentId },
+            data: { token: expectedToken },
             status: 201,
             statusText: "Created",
             headers: {},
@@ -38,7 +37,6 @@ describe("SessionService.ts", () => {
         const session = await createSession(userCredentials);
 
         expect(session.token).to.equal(expectedToken)
-        expect(session.studentId).to.equal(expectedStudentId)
     });
 
     it("Throws error if usercredentials are invalid", async () => {     
@@ -90,7 +88,7 @@ describe("SessionService.ts", () => {
         };
         sinon.stub(axios, "delete").rejects(response);
         
-        const session = new Session("1010101010100101010101010100101010101010", 267)
+        const session = new Session("1010101010100101010101010100101010101010")
         
         expect(deleteSession(session)).to.eventually.be.undefined;
     });
@@ -107,7 +105,7 @@ describe("SessionService.ts", () => {
         };
         sinon.stub(axios, "delete").rejects(response);
         
-        const session = new Session("1010101010100101010101010100101010101010", 267)
+        const session = new Session("1010101010100101010101010100101010101010")
         expect(deleteSession(session)).to.eventually.throw()
     });
 });

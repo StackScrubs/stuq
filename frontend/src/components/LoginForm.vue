@@ -25,7 +25,7 @@ import { defineComponent } from "vue";
 import { useField, useForm } from "vee-validate";
 import { object, string } from "yup"; 
 
-import { UserCredentials, InvalidCredentialsError } from "../types/UserCredentials";
+import { InvalidCredentialsError } from "../types/UserCredentials";
 import store from "../store";
 import BaseInput from "./BaseInput.vue";
 import { mapActions } from "vuex";
@@ -33,14 +33,7 @@ import { mapActions } from "vuex";
 export default defineComponent({
     components: { BaseInput },
     name: "LoginComponent",
-    prop: {
-        failedLoginMessage: "",
-        errors: {
-            email: "",
-            password: ""
-        }
-    },
-    data: (): { failedLoginMessage: string } => {
+    data: () => {
         return {
             failedLoginMessage: "",
         };
