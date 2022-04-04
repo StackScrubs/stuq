@@ -1,6 +1,8 @@
 version: '3.1'
 
 services:
+  # In an actual production environment, DB would not be found here.
+  # This is included here for the evaluation of the submission.
   db:
     image: mysql:5.7-oracle
     restart: always
@@ -14,7 +16,7 @@ services:
       MYSQL_ROOT_PASSWORD: db_root_pass
 
   backend:
-    build: backend/
+    image: stackscrubs/stuq-backend:latest
     restart: always
     ports:
       - 8085:8080
@@ -24,25 +26,11 @@ services:
       DB_PASSWORD: db_user_pass
     depends_on:
       - db
-    labels:
-      docker-compose-watcher.path: "backend/"
 
   frontend:
-    build:
-      context: frontend/
-      dockerfile: Dockerfile-dev
+    image: stackscrubs/stuq-frontend:latest
     volumes:
       - ./frontend:/app
     restart: always
     ports:
       - 8080:8080
-
-  phpmyadmin:
-    depends_on:
-      - db
-    image: phpmyadmin/phpmyadmin:latest
-    restart: always
-    ports:
-      - 7000:80
-    environment:
-      PMA_HOST: db

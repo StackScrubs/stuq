@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.springframework.lang.NonNull;
 
 /**
@@ -20,8 +22,8 @@ import org.springframework.lang.NonNull;
  */
 @Entity
 public class Session {
-    public static final Duration ABSOLUTE_EXPIRY_DURATION = Duration.ofMinutes(30);
-    public static final Duration IDLE_EXPIRY_DURATION = Duration.ofHours(4);
+    public static final Duration ABSOLUTE_EXPIRY_DURATION = Duration.ofHours(4);
+    public static final Duration IDLE_EXPIRY_DURATION = Duration.ofMinutes(30);
     public static final int TOKEN_SIZE = 32;
 
     @Id
@@ -62,6 +64,7 @@ public class Session {
         return this.token.clone();
     }
 
+    @JsonIgnore
     public boolean isExpired() {
         Instant now = Instant.now();
         return (
@@ -70,12 +73,20 @@ public class Session {
         );
     }
 
-    private void throwIfExpired() {
-        if (this.isExpired()) throw new IllegalStateException("the session is expired");
+    /**
+     * Updates the idle expiry of the session.
+     */
+    public void refresh() {
+        this.idleExpiry = Instant.now().plus(IDLE_EXPIRY_DURATION);
     }
 
+    @JsonIgnore
     public User getUser() {
         this.throwIfExpired();
         return this.user;
+    }
+
+    private void throwIfExpired() {
+        if (this.isExpired()) throw new IllegalStateException("the session is expired");
     }
 }

@@ -2,6 +2,8 @@ package com.github.stackscrubs.stuq.backend.controller;
 
 import com.github.stackscrubs.stuq.backend.model.jpa.Session;
 
+import java.util.Base64;
+
 import com.github.stackscrubs.stuq.backend.model.UserCredentials;
 import com.github.stackscrubs.stuq.backend.service.SessionService;
 
@@ -26,14 +28,14 @@ import org.springframework.http.MediaType;
 public class SessionController {
     @Autowired
     private SessionService service;
-
+    
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Session create(@RequestBody UserCredentials credentials) {
         return this.service.create(credentials);
     }
 
-    @DeleteMapping(value = "{token}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void delete(@PathVariable byte[] token) {
-        this.service.delete(token);
+    @DeleteMapping(value = "{token}")
+    public void delete(@PathVariable String token) {
+        this.service.delete(Base64.getDecoder().decode(token));
     }
 }

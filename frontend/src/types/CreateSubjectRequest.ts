@@ -1,4 +1,4 @@
-export class Subject {
+export class CreateSubjectRequest {
     constructor(
         readonly termYear: number,
         readonly termPeriod: string,
@@ -6,5 +6,3 @@ export class Subject {
         readonly name: string,
     ) {}
 }
-
-export class SubjectNotFoundError extends Error {}

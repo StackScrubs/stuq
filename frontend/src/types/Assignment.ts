@@ -1,7 +1,9 @@
-import { boolean } from "yup"
+import { Subject } from "./Subject";
 
-export type Assignment = {
-    id: number,
-    name: string,
-    //available: boolean, //or ENUM if possible (already done, not picked, picked)
+export class Assignment {
+    constructor(
+        readonly id: string,
+        readonly name: string,
+        readonly subject: Subject,
+    ) {}
 }
