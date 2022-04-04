@@ -15,6 +15,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+
 /**
  * StudentController handles requests for the StudentService.
  * 
@@ -28,6 +35,13 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+    @Operation(summary = "Get all submissions submitted by a student, using the student's token")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved all submissions", 
+          content = { @Content(mediaType = "application/json", 
+            array = @ArraySchema(schema = @Schema(implementation = Submission.class))) }),
+        @ApiResponse(responseCode = "401", description = "Invalid token", content = @Content)
+    })
     @GetMapping(value = "/submissions", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Submission> getSubmissions(Authentication authentication) {
         Session session = (Session)authentication.getPrincipal();

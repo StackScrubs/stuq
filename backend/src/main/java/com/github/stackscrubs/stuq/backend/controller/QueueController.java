@@ -20,6 +20,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+
 /**
  * QueueController handles requests for the QueueService.
  * 
@@ -33,11 +40,24 @@ public class QueueController {
     @Autowired
     private QueueService queueService;
 
+    @Operation(summary = "Get all currently active queues")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved all queues", 
+          content = { @Content(mediaType = "application/json", 
+            array = @ArraySchema(schema = @Schema(implementation = Queue.class))) }),
+        @ApiResponse(responseCode = "401", description = "Invalid token", content = @Content)
+    })
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Queue> getAll() {
         return this.queueService.getActiveQueues();
     }
 
+    @Operation(summary = "Add a new student from a subject's queue, using the student's token")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully added student to queue"),
+        @ApiResponse(responseCode = "401", description = "Invalid token"),
+        @ApiResponse(responseCode = "404", description = "Queue was not found")
+    })
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addToQueue(@RequestBody SubjectId subjectId, Authentication authentication) {
         Session session = (Session)authentication.getPrincipal();
@@ -46,6 +66,12 @@ public class QueueController {
         this.queueService.addStudentToQueue(subjectId.getTerm().getId(), subjectId.getCode(), studentId);
     }
 
+    @Operation(summary = "Removes a student from a queue, using the student's token")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully removed student from queue"),
+        @ApiResponse(responseCode = "401", description = "Invalid token"),
+        @ApiResponse(responseCode = "404", description = "Student was not found in any queue")
+    })
     @DeleteMapping(value = "/remove")
     public void removeFromQueue(Authentication authentication) {
         Session session = (Session)authentication.getPrincipal();
@@ -54,11 +80,24 @@ public class QueueController {
         this.queueService.removeStudentFromQueue(studentId);
     }
 
+    @Operation(summary = "Create a new queue for a subject")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully created queue"),
+        @ApiResponse(responseCode = "401", description = "Invalid token"),
+        @ApiResponse(responseCode = "404", description = "Subject was not found"),
+        @ApiResponse(responseCode = "409", description = "Queue already exists")
+    })
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void create(@RequestBody SubjectId subjectId) {
         this.queueService.createBySubject(subjectId.getTerm().getId(), subjectId.getCode());
     }
 
+    @Operation(summary = "Deletes a queue for a subject")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Successfully deleted queue"),
+        @ApiResponse(responseCode = "401", description = "Invalid token"),
+        @ApiResponse(responseCode = "404", description = "Subject or queue was not found")
+    })
     @DeleteMapping(value = "/{termYear}/{termPeriod}/{code}")
     public void delete(
         @PathVariable int termYear,
