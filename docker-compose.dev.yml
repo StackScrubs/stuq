@@ -14,12 +14,29 @@ services:
       MYSQL_ROOT_PASSWORD: db_root_pass
 
   backend:
-    image: stuq-backend:latest
+    build: backend/
     restart: always
     ports:
-      - 8085:8085
+      - 8085:8080
+    environment:
+      DB_URL: jdbc:mysql://db:3306/stuq_db
+      DB_USERNAME: stuq_be
+      DB_PASSWORD: db_user_pass
+      CORS: http://localhost:8080
     depends_on:
       - db
+    labels:
+      docker-compose-watcher.path: "backend/"
+
+  frontend:
+    build:
+      context: frontend/
+      dockerfile: Dockerfile-dev
+    volumes:
+      - ./frontend:/app
+    restart: always
+    ports:
+      - 8080:8080
 
   phpmyadmin:
     depends_on:
