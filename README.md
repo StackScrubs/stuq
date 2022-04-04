@@ -43,6 +43,23 @@ For production: `docker-compose -f docker-compose.prod.yml up`
 
 For development: `docker-compose -f docker-compose.dev.yml up`
 
+### Testing front-end
+To actually get into the system on the front-end and try it out, a user must be registered.
+
+To do this, run the Docker compose file and log into PHPMyAdmin (uses port 7000).
+
+Use the following information to log into PHPMyAdmin:
+- Username: `stuq_be`
+- Password: `db_user_pass`
+
+Here, insert a new *User* with a first name, last name, email and the following password hash: `af1e7a1c45cfd3e18f9b29d657677ae8551e167e3ea97e57aba6b15b8c7ce0bd38753c80bc105a8de637e2239fa6fd4d6afc1c7a76ba3d54f7bbd5c9e216d73c1390c58f50abf7ab83ed3bd35ede8609`.
+
+The hash above corresponds to the password `pass`.
+
+Then insert a new *Student* with the ID that corresponds to the *User* you just created.
+
+*We realize this is a severely flawed way for graders to test the system, however there was no way for us to prioritize this with the given time constraints.*
+
 ## ⚙️ Functionality
 As noted above, the current state of the project is by no means a complete solution.
 
