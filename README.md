@@ -22,7 +22,7 @@ Testing has been done throughout the entirety of the development process using c
 
 The CI pipeline may be found [here](https://github.com/StackScrubs/stuq/actions/workflows/ci.yml).
 
-Running the tests yourself is also fairly straight forward process.
+Running the tests yourself is also a fairly straight forward process.
 
 Running tests on back-end: `cd backend && mvn surefire:test`
 
