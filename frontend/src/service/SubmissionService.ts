@@ -29,10 +29,10 @@ export async function getSubmissions() {
     }
 }
 
-export async function enqueue(subject: Subject, assignments: Array<Assignment>, queueType: QueueType) {
+export async function enqueue(subject: Subject, assignments: Array<Assignment>, queueType: QueueType, message: string) {
     try {
         const response: AxiosResponse<Array<Submission>, unknown> = await axios.post(
-            "/queue/add/", { subject: subject, assignments: assignments, queueType: queueType} , CONFIG 
+            "/queue/add/", { subject: subject, assignments: assignments, queueType: queueType, message: message } , CONFIG 
         )
         return response.data
     } catch (e) {

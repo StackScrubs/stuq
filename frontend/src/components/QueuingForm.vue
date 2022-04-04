@@ -34,9 +34,7 @@ import { Subject, SubjectNotFoundError } from "@/types/Subject"
 
 import { getQueueTypeAsText } from "@/utils/utils"
 import { enqueue, getSubmissions } from "@/service/SubmissionService";
-import { getSubject, getSubjectAssignments } from "@/service/SubjectService"
-import store from "@/store";
-import { mapGetters } from "vuex";
+import { getSubjectAssignments } from "@/service/SubjectService"
 import { Submission } from "@/types/Submission";
 
 export default defineComponent({
@@ -54,11 +52,11 @@ export default defineComponent({
         return {
             subject: new Subject(2021, "V", "IDATT2105", "Full-stack"), //Test data
             failedEnqueueMessage: "",
-            doneAssignments: [
+            doneAssignments: [ //LOCAL DATA: Can be remnoved when getAssignements and getSubmissions properly works with backend
                 new Assignment("1", "oblig 1", new Subject(2021, "V", "IDATT2105", "Full-stack")),
                 new Assignment("2", "oblig 2", new Subject(2021, "V", "IDATT2105", "Full-stack"))
             ],
-            pickableAssignments: [
+            pickableAssignments: [ //LOCAL DATA: Can be remnoved when getAssignements and getSubmissions properly works with backend
                 {picked: false, assignment: new Assignment("3", "oblig 3", new Subject(2021, "V", "IDATT2105", "Full-stack"))},
                 {picked: false, assignment: new Assignment("4", "oblig 4", new Subject(2021, "V", "IDATT2105", "Full-stack"))}
             ],
@@ -71,22 +69,16 @@ export default defineComponent({
         }
     },
     methods: {
-        ...mapGetters("Authentication", [
-            "session"
-        ]),
         async submit() {
             const assignments = this.pickableAssignments.filter(v => v.picked).map(v => v.assignment)
-            const queueType = this.selectedQueueType //find quequetype choice
+            const queueType = this.selectedQueueType
             if (assignments.length > 0) {
                 try {
-                    await enqueue(this.subject, assignments, queueType);
+                    await enqueue(this.subject, assignments, queueType, this.message);
                 } catch (e) {
                     if (e instanceof SubjectNotFoundError) {
                         this.failedEnqueueMessage = "Fant ikke ønsket emne";
                     }
-                // if (e instanceof QueueNotFoundError) {
-                //     this.failedEnqueueMessage = "Fant ikke kø for ønsket emne";
-                // }
                 }
             } else {
                 this.failedEnqueueMessage = "Velg øvinger/obliger samt køtype for å gå videre"
@@ -94,34 +86,31 @@ export default defineComponent({
         }
     },
 
-    async mounted() {
-        try {
-            const assignments = await getSubjectAssignments(this.subject.termYear, this.subject.termPeriod, this.subject.code)
-            const submissions: Array<Submission> = await getSubmissions()
-            if (assignments !== undefined) {
-                const result = assignments.map((assignment) => {
-                    return { available: (submissions.find((submission) => submission.id.assignment.id === assignment.id && submission.isApproved) !== undefined) ? true : false,
-                        assignment: assignment
-                    };
-                });
-                let temp: Array<{picked: boolean, assignment: Assignment}> = []
-                result.forEach((pickableAssignment) => {
-                    if (pickableAssignment.available) {
-                        temp.push({ picked: false, assignment: pickableAssignment.assignment })
-                    } else {
-                        this.doneAssignments.push(pickableAssignment.assignment)
-                    }
-                });
-                this.pickableAssignments = temp
-            } else {
-                //Handle "undefined" behaviour
-                console.log("Assignments: ", + assignments)
-                console.log("Submissions: ", + submissions)
-            }
-        } catch (e) {
-            //Handle error
-        }
-    },
+    //The following code will work if getSubjectAssignments() and getSubmissions() works with the backend endpoints.
+    //Since it doesn't fully work yet, and we run out of time, we substitute it here with local data.
+
+    // async mounted() {
+    //     try {
+    //         const assignments: Array<Assignment> = await getSubjectAssignments(this.subject.termYear, this.subject.termPeriod, this.subject.code)
+    //         const submissions: Array<Submission> = await getSubmissions()
+    //         const result = assignments.map((assignment) => {
+    //             return { available: (submissions.find((submission) => submission.id.assignment.id === assignment.id && submission.isApproved) !== undefined) ? true : false,
+    //                 assignment: assignment
+    //             };
+    //         });
+    //         let temp: Array<{picked: boolean, assignment: Assignment}> = []
+    //         result.forEach((pickableAssignment) => {
+    //             if (pickableAssignment.available) {
+    //                 temp.push({ picked: false, assignment: pickableAssignment.assignment })
+    //             } else {
+    //                 this.doneAssignments.push(pickableAssignment.assignment)
+    //             }
+    //         });
+    //         this.pickableAssignments = temp
+    //     } catch (e) {
+    //         //Handle Not_found_error from API response
+    //     }
+    // },
 })
 </script>
 
