@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.lang.NonNull;
 
 /**
- * JSON module used to deserialize requests for creating new subjects
+ * JSON model used to deserialize requests for creating new subjects
  * or updating existing ones.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
