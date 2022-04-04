@@ -40,8 +40,16 @@ public class Session {
     @Column(nullable = false)
     private Instant idleExpiry;
 
+    /**
+     * Default constructor.
+     * Package-private as it is - and should only be used by JPA. 
+     */
     Session() {}
 
+    /**
+     * Constructor
+     * @param user User to generate a session for.
+     */
     public Session(@NonNull User user) {
         Instant now = Instant.now();
         this.token = generateToken();
@@ -50,6 +58,10 @@ public class Session {
         this.absoluteExpiry = now.plus(ABSOLUTE_EXPIRY_DURATION);
     }
 
+    /**
+     * Helper method for generating a token.
+     * @return Byte-array that represents a token.
+     */
     private static byte[] generateToken() {
         byte[] token = new byte[TOKEN_SIZE];
         try {
@@ -60,10 +72,18 @@ public class Session {
         return token;
     }
 
+    /**
+     * Getter for token.
+     * @return Token represented as a byte-array.
+     */
     public byte[] getToken() {
         return this.token.clone();
     }
 
+    /**
+     * Checks whether a session is expired or not.
+     * @return True if the session is expired, false otherwise.
+     */
     @JsonIgnore
     public boolean isExpired() {
         Instant now = Instant.now();
@@ -80,12 +100,20 @@ public class Session {
         this.idleExpiry = Instant.now().plus(IDLE_EXPIRY_DURATION);
     }
 
+    /**
+     * Getter for the session's user.
+     * @return User this session is associated with.
+     */
     @JsonIgnore
     public User getUser() {
         this.throwIfExpired();
         return this.user;
     }
 
+    /**
+     * Helper method for throwing an exception if this session is expired.
+     * @throws IllegalStateException The session is expired.
+     */
     private void throwIfExpired() {
         if (this.isExpired()) throw new IllegalStateException("the session is expired");
     }

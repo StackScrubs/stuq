@@ -19,6 +19,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.springframework.lang.NonNull;
 
+/**
+ * JPA Entity specification of a subject.
+ */
 @Entity
 public class Subject {
     @Id
@@ -51,38 +54,76 @@ public class Subject {
     @JsonIgnore
     private Set<Assignment> assignments;
 
+    /**
+     * Default constructor.
+     * Package-private as it is - and should only be used by JPA. 
+     */
     Subject() {}
 
+    /**
+     * Constructor.
+     * @param id The subject's ID.
+     * @param name The full name of the subject.
+     */
     public Subject(@NonNull SubjectId id, @NonNull String name) {
         this.id = Objects.requireNonNull(id, "id cannot be null");
         this.name = Objects.requireNonNull(name, "name cannot be null");
     }
 
+    /**
+     * Getter for ID.
+     * @return The subject's ID.
+     */
     public SubjectId getId() {
         return this.id;
     }
 
+    /**
+     * Getter for name.
+     * @return The subject's name.
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Getter for teachers who teach the subject.
+     * @return Set of teachers who teach the subject.
+     */
     public Set<Teacher> getTeachers() {
         return this.teachers;
     }
 
+    /**
+     * Getter for teaching assistants who assist the teacher in the subject.
+     * @return Set of teaching assistants who assist the teacher in the subject.
+     */
     public Set<TeachingAssistant> getTeachingAssistants() {
         return this.teachingAssistants;
     }
 
+    /**
+     * Getter for assignments handed out in the assignment.
+     * @return Set of assignments handed out in the subject.
+     */
     public Set<Assignment> getAssignments() {
         return this.assignments;
     }
 
+    /**
+     * Override of Object's hashCode method.
+     * @return This object's hashcode.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(this.id, this.teachers, this.teachingAssistants, this.assignments, this.name);
     }
 
+    /**
+     * Override of Object's equals method.
+     * @param obj Other object to compare.
+     * @return True if the objects are strictly equal, false otherwise.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

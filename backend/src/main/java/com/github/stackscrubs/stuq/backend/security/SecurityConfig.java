@@ -9,6 +9,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Spring configuration class.
+ * Used to enforce the use of tokens when accessing
+ * endpoints and otherwise configure the authentication
+ * protocols to use.
+ */
 @EnableWebSecurity
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)  
@@ -26,6 +32,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SessionAuthRequestFilter sessionAuthRequestFilter;
 
+    /**
+     * Override of WebSecurityConfigurerAdapter's configure method.
+     * Used to configure the authentication protocols to use.
+     * Also specifies which endpoints do and don't require authentication.
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // Disable CSRF, as it is not needed for STUQ
