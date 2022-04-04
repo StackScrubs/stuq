@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/subject")
 @EnableAutoConfiguration
-@CrossOrigin(origins = "") //TODO:
 public class SubjectController {
 
     @Autowired
