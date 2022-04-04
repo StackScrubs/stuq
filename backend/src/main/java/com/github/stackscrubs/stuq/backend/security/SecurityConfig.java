@@ -27,13 +27,7 @@ import org.springframework.context.annotation.Bean;
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)  
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final static String[] SWAGGER_WHITELIST = {
-        "/swagger-resources/**",
-        "/swagger-ui/**",
-        "/v2/api-docs",
-        "/webjars/**"
-    };
-
+    
     @Autowired
     private SessionAuthExceptionEntryPoint sessionAuthExceptionEntryPoint;
 
@@ -55,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf().disable()
         // Allow all requests to /session
             .authorizeRequests().antMatchers("/session/**").permitAll()
+            .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
         // Require auth for all other urls.
             .anyRequest().authenticated().and()
             .exceptionHandling().authenticationEntryPoint(sessionAuthExceptionEntryPoint).and()
