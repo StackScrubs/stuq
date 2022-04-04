@@ -22,6 +22,7 @@ services:
       DB_URL: jdbc:mysql://db:3306/stuq_db
       DB_USERNAME: stuq_be
       DB_PASSWORD: db_user_pass
+      CORS: http://localhost:8080/
     depends_on:
       - db
     labels:

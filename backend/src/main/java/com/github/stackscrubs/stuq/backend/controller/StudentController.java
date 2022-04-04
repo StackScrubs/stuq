@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/student")
 @EnableAutoConfiguration
-@CrossOrigin(origins = "") //TODO:
 public class StudentController {
     
     @Autowired
