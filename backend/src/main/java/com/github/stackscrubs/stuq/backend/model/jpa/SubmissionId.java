@@ -10,6 +10,9 @@ import javax.persistence.ManyToOne;
 
 import org.springframework.lang.NonNull;
 
+/**
+ * JPA specification of an embeddable submission ID.
+ */
 @Embeddable
 public class SubmissionId implements Serializable {
 
@@ -21,26 +24,52 @@ public class SubmissionId implements Serializable {
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Assignment assignment;
 
+    /**
+     * Default constructor.
+     * Package-private as it is - and should only be used by JPA. 
+     */
     SubmissionId() {}
 
+    /**
+     * Constructor.
+     * @param student The student this submission belongs to.
+     * @param assignment The assignment this submission is associated with.
+     */
     public SubmissionId(@NonNull Student student, @NonNull Assignment assignment) {
-        this.student = student;
-        this.assignment = assignment;
+        this.student = Objects.requireNonNull(student, "student cannot be null");
+        this.assignment = Objects.requireNonNull(assignment, "assignment cannot be null");
     }
 
+    /**
+     * Getter for student.
+     * @return The student who made this submission.
+     */
     public Student getStudent() {
         return this.student;
     }
 
+    /**
+     * Getter for assignment.
+     * @return The assignment this submission is associated with.
+     */
     public Assignment getAssignment() {
         return this.assignment;
     }
 
+    /**
+     * Override of Object's hashCode method.
+     * @return This object's hashcode.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(this.student, this.assignment);
     }
 
+    /**
+     * Override of Object's equals method.
+     * @param obj Other object to compare.
+     * @return True if the objects are strictly equal, false otherwise.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

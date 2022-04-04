@@ -17,10 +17,23 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * Spring configuration class.
+ * Used to enforce the use of tokens when accessing
+ * endpoints and otherwise configure the authentication
+ * protocols to use.
+ */
 @EnableWebSecurity
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)  
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private final static String[] SWAGGER_WHITELIST = {
+        "/swagger-resources/**",
+        "/swagger-ui/**",
+        "/v2/api-docs",
+        "/webjars/**"
+    };
+
     @Autowired
     private SessionAuthExceptionEntryPoint sessionAuthExceptionEntryPoint;
 

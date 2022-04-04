@@ -9,6 +9,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.springframework.lang.NonNull;
 
+/**
+ * JSON model used to deserialize requests for creating new subjects
+ * or updating existing ones.
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateSubjectRequest {
@@ -25,6 +29,13 @@ public class CreateSubjectRequest {
     @NonNull 
     private final String name;
 
+    /**
+     * Constructor and JSONCreator.
+     * @param code Subject code.
+     * @param termYear The year in which the subject takes place.
+     * @param termPeriod The period in which the subject takes place.
+     * @param name The full name of the subject.
+     */
     @JsonCreator
     public CreateSubjectRequest(
         @NonNull String code, 
@@ -37,7 +48,7 @@ public class CreateSubjectRequest {
         this.termPeriod = Objects.requireNonNull(termPeriod, "termPeriod cannot be null");
         this.name = Objects.requireNonNull(name, "name cannot be null");
     }
-
+    
     @JsonProperty
     public String getCode() {
         return code;

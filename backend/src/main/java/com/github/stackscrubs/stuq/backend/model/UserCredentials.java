@@ -9,6 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.springframework.lang.NonNull;
 
+/**
+ * JSON model used to deserialize user credentials.
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserCredentials {
@@ -19,6 +22,11 @@ public class UserCredentials {
     @NonNull 
     private final String password;
 
+    /**
+     * Constructor and JSONCreator.
+     * @param email User's email.
+     * @param password User's password.
+     */
     @JsonCreator
     public UserCredentials(
         @NonNull @JsonProperty("email") String email, 

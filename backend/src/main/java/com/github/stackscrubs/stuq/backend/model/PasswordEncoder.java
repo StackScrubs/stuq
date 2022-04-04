@@ -7,7 +7,7 @@ import java.util.Properties;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 
 /**
- * PasswordEncoder performs hashing operations on passwords to make them irretrievable.
+ * Singleton class that performs hashing operations on passwords to make them irretrievable.
  */
 public class PasswordEncoder extends Pbkdf2PasswordEncoder {
     private static final int SALT_LENGTH = 16;
@@ -16,10 +16,18 @@ public class PasswordEncoder extends Pbkdf2PasswordEncoder {
 
     private static PasswordEncoder instance;
 
+    /**
+     * Default constructor.
+     * Private as this class uses the singleton design pattern.
+     */
     private PasswordEncoder() {
         super(getPasswordSecret(), SALT_LENGTH, ITERS, HASH_WIDTH);
     }
 
+    /**
+     * Thread-safe singleton getter.
+     * @return Instance of the singleton object.
+     */
     public synchronized static PasswordEncoder getInstance() {
         if (instance == null) {
             instance = new PasswordEncoder();
@@ -27,6 +35,10 @@ public class PasswordEncoder extends Pbkdf2PasswordEncoder {
         return instance;
     }
 
+    /**
+     * Helper method for getting the properties resource.
+     * @return Application properties resource as a Property object.
+     */
     private static Properties getApplicationProperties() {
         Properties properties = new Properties();
         try (InputStream propertiesStream = PasswordEncoder.class.getResourceAsStream("/application.properties")) {
@@ -37,6 +49,10 @@ public class PasswordEncoder extends Pbkdf2PasswordEncoder {
         return properties;
     }
 
+    /**
+     * Helper method for extracting a password secret from the properties resource.
+     * @return Password secret found in application properties.
+     */
     private static String getPasswordSecret() {
         String secret = getApplicationProperties().getProperty("password.secret");
         if (secret == null) {
