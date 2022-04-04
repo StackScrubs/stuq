@@ -58,3 +58,10 @@ Nearly all of the back-end endpoints are set up and ready for use, including - b
 - Partial management of subjects, allowing for creation, deletion, updating and retrieval of stored subjects, the teachers that teach them, the teaching assistants associated with them, assignments handed out in them, active queues for them etc.
 
 ### 🏠 Front-end
+Main functionality we managed to add here in time, was login and queue form enlisting. Given that student has been registered in the database, the user can log in. A student should not be able to create his/her own account, only log in to one. The teacher/admin should have the ability to register students in the future.
+In the queueing-form the user can pick assignments to enque with, to enque for submission or help, and optionally add a message. The user should also be able to pick location, but we did not manage to properly add this in time.
+
+Some front-end endpoints to use for the API: 
+- Login request/response, with token storage in vuex state.
+- Subject requests, get, update, delete.
+- Assignment and submission requests for the queuing form. (Currently not entirely working so we substituted it with local data)
