@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/queue")
 @EnableAutoConfiguration
-@CrossOrigin(origins = "") //TODO:
 public class QueueController {
     
     @Autowired

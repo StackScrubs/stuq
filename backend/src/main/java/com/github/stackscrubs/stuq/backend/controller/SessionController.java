@@ -24,7 +24,6 @@ import org.springframework.http.MediaType;
 @RestController
 @RequestMapping(value = "/session")
 @EnableAutoConfiguration
-@CrossOrigin(origins = "") //TODO:
 public class SessionController {
     @Autowired
     private SessionService service;
