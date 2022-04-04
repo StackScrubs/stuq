@@ -4,7 +4,7 @@ import sinon from "sinon";
 import axios, { AxiosResponse, AxiosError } from "axios";
 import { Assignment } from "@/types/Assignment";
 import { getAssignments, getSubmissions } from "@/service/QueingService";
-import { SubjectNotFoundError } from "@/types/Subject";
+import { Subject, SubjectNotFoundError } from "@/types/Subject";
 
 type GetAssignments = { assignments: { id: number, name: string }[] } | undefined;
 type AssignmentsResponse = AxiosResponse<GetAssignments, unknown>;
@@ -17,6 +17,8 @@ type SubmissionsError = AxiosError<GetSubmissions, unknown>;
 chai.use(chaiAsPromised);
 
 describe("QueuingService.ts", () => {
+    const subject = new Subject(2022, "H", "Full-stack", "IDATT2105") 
+
     afterEach(() => {
         sinon.restore();
     });
@@ -33,7 +35,6 @@ describe("QueuingService.ts", () => {
         };
         sinon.stub(axios, "get").resolves(response);
 
-        const subject = {termYear: 2022, termPeriod: "H", code: "IDAT2105"} 
         const assignments = await getAssignments(subject);
 
         expect(assignments).to.equal(expected)
@@ -51,7 +52,6 @@ describe("QueuingService.ts", () => {
         };
         sinon.stub(axios, "get").rejects(response);
 
-        const subject = {termYear: 2023, termPeriod: "H", code: "IDAT2105"} 
         await expect(getAssignments(subject)).to.be.rejected;
     });
 
@@ -74,14 +74,14 @@ describe("QueuingService.ts", () => {
         };
         sinon.stub(axios, "get").rejects(response);
 
-        const subject = {termYear: 2023, termPeriod: "H", code: "IDAT2105"} 
         await expect(getAssignments(subject)).to.be.rejectedWith(SubjectNotFoundError);
     });
 
     it("Retrieves submissions when a valid subject is provided", async () => {
+
         const expected = { submissions: [
-            { id: { student: undefined, assignment: { id: 1, name: "Oblig 1" }}, isApproved: true, feedback: "Bra jobba!" }, 
-            { id: { student: undefined, assignment: { id: 2, name: "Oblig 2" }}, isApproved: false, feedback: "Møter dessverre ikke kravet for godkjent!" }
+            { id: { student: undefined, assignment: new Assignment( "1", "Oblig 1", subject)}, isApproved: true, feedback: "Bra jobba!" }, 
+            { id: { student: undefined, assignment: new Assignment( "2", "Oblig 2", subject)}, isApproved: false, feedback: "Møter dessverre ikke kravet for godkjent!" }
         ]};
         
         const response: SubmissionsResponse = {
@@ -93,7 +93,6 @@ describe("QueuingService.ts", () => {
         };
         sinon.stub(axios, "get").resolves(response);
 
-        const subject = {termYear: 2022, termPeriod: "H", code: "IDAT2105"} 
         const submissions = await getSubmissions(subject);
 
         expect(submissions).to.equal(expected)
@@ -111,7 +110,6 @@ describe("QueuingService.ts", () => {
         };
         sinon.stub(axios, "get").rejects(response);
 
-        const subject = {termYear: 2023, termPeriod: "H", code: "IDAT2105"} 
         await expect(getSubmissions(subject)).to.be.rejected;
     });
 
@@ -134,7 +132,6 @@ describe("QueuingService.ts", () => {
         };
         sinon.stub(axios, "get").rejects(response);
 
-        const subject = {termYear: 2023, termPeriod: "H", code: "IDAT2105"} 
         await expect(getSubmissions(subject)).to.be.rejectedWith(SubjectNotFoundError);
     });
 });

@@ -40,9 +40,8 @@ export default defineComponent({
             password: ""
         }
     },
-    data: (): {credentials: UserCredentials, failedLoginMessage: string } => {
+    data: (): { failedLoginMessage: string } => {
         return {
-            credentials: { email: "", password: ""},
             failedLoginMessage: "",
         };
     },

@@ -2,8 +2,11 @@
     <div class="box">
         <form class="box" @submit.prevent="onSubmit">            
             <label>Øvinger</label>
-            <div class="checkbox-list-options" v-for="(assignment, index) in assignments" :key="index" >
-                    <BaseCheckbox :label="assignment.name" v-model="assignment.available" />
+            <div class="checkbox-list-options" v-for="(doneAssignment, index) in doneAssignments" :key="index" >
+                    <BaseCheckbox :label="doneAssignment.name" v-model="doneMarker" />
+            </div>
+            <div class="checkbox-list-options" v-for="(pickableAssignment, index) in pickedAssignments" :key="index" >
+                    <BaseCheckbox :label="pickableAssignment.assignment.name" v-model="pickableAssignment.picked" />
             </div>
 
             <label>Type</label>
@@ -45,13 +48,23 @@ export default defineComponent({
         },
     },
     data: (): {
-        failedEnqueueMessage: string,
-        assignments: Array<{available: boolean, assignment: Assignment}>
+        failedEnqueueMessage: string
+        doneAssignments: Array<Assignment>
+        doneMarker: boolean
+        //pickableAssignments: Array<{picked: boolean, assignment: Assignment}>
         queueTypes: QueueType | undefined
         message: string } => {
         return {
             failedEnqueueMessage: "",
-            assignments: [],
+            doneAssignments: [
+                new Assignment("1", "oblig 1", new Subject(2021, "V", "IDATT2105", "Full-stack")),
+                new Assignment("2", "oblig 2", new Subject(2021, "V", "IDATT2105", "Full-stack"))
+            ],
+            doneMarker: true,
+            // pickableAssignments: [
+            //     {picked: false, assignment: new Assignment("3", "oblig 3", new Subject(2021, "V", "IDATT2105", "Full-stack"))},
+            //     {picked: false, assignment: new Assignment("4", "oblig 4", new Subject(2021, "V", "IDATT2105", "Full-stack"))}
+            // ],
             queueTypes: undefined,
             message: ""
         }
@@ -75,8 +88,8 @@ export default defineComponent({
             //Gather all checked submission choices
             await this.submit().then(async (submissionData) => {
                 if (submissionData !== undefined) {
-                    if (submissionData.pickedAssigments !== undefined && submissionData.queueType) {
-                        const assignments = submissionData.pickedAssigments.filter(v => v !== undefined)
+                    if (submissionData.pickedAssignments !== undefined && submissionData.queueType) {
+                        const assignments = submissionData.pickedAssignments.filter(v => v !== undefined)
                         const queueType = submissionData.queueType
                         try {
                             await enqueue(store.getters.session, this.subject, assignments, queueType);
@@ -99,16 +112,31 @@ export default defineComponent({
             const assignments = await getAssignments(this.subject)
             const submissions = await getSubmissions(this.subject)
             //If submission have an assignment then mark said assignment as done
-            //Set assignments data 
-            const result = assignments?.map((v) => {
-                return { available: (submissions?.find((submission) => submission.id.assignment.id === v.id && submission.isApproved) !== undefined) ? true : false,
-                    assignment: {id: v.id, name: v.name}
-                }
-            });
-            if (result !== undefined) {
-                this.assignments = result;
+            //Set assignments data
+            if (assignments !== undefined && submissions !== undefined) {
+                const result = assignments.map((assignment) => {
+                    return { available: (submissions.find((submission) => submission.id.assignment.id === assignment.id && submission.isApproved) !== undefined) ? true : false,
+                        assignment: assignment
+                    };
+                });
+                let temp: Array<{picked: boolean, assignment: Assignment}> = []
+                result.forEach((pickableAssignment) => {
+                    if (pickableAssignment.available) {
+                        temp.push({ picked: false, assignment: pickableAssignment.assignment })
+                    } else {
+                        this.doneAssignments.push(pickableAssignment.assignment)
+                    }
+                });
+                this.pickedAssignments = temp
+                // const pickedAssigments = assignments?.filter((assignment) => submissions?.find((submission) => submission.id.assignment.id === assignment.id && submission.isApproved) !== undefined).map((assignment) => {
+                //     return { picked: false,
+                //         assignment: assignment
+                //     }
+                // })
+                // this.pickableAssignments = pickedAssigments;
+
             } else {
-                //Handle undefined behaviour
+                //Handle "undefined" behaviour
             }
         } catch (e) {
             //Handle error
@@ -116,21 +144,26 @@ export default defineComponent({
     },
     setup() {
         const validationSchema = object({
-            pickedAssigments: array().of(
-                number()
-            ).required("Må velge minst én øving/oblig"),
+            pickedAssignments: array().test({
+                name: "pickedAssignments_test",
+                exclusive: true,
+                message: "Velg minst en øving/oblig",
+                test: (v) => {
+                    return (v === undefined) ? false : v.length > 0
+                }
+            }),
             queueType: string().required("queue type is required"),
         });
 
         const { handleSubmit, errors } = useForm({
             validationSchema,
             initialValues: {
-                pickedAssigments: undefined,
-                queueType: undefined,
+                pickedAssignments: [],
+                queueType: "",
             },
         });
 
-        const { value: pickedAssigments } = useField("pickedAssigments");
+        const { value: pickedAssignments } = useField("pickedAssignments");
         const { value: queueType } = useField("queueType");
 
         const submit =  handleSubmit((values) => {
@@ -140,7 +173,7 @@ export default defineComponent({
         return {
             validationSchema,
             errors,
-            pickedAssigments,
+            pickedAssignments,
             queueType,
             submit,
         }
